@@ -17,7 +17,7 @@ public class QuestionEndActivity extends AppCompatActivity {
 
     public void go_to_home(View view){
         //HOME画面に行く
-        Intent intent = new Intent(QuestionEndActivity.this,MainActivity.class);
+        Intent intent = new Intent(QuestionEndActivity.this,Main2Activity.class);
         startActivity(intent);
     }
 }

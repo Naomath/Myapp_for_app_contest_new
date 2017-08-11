@@ -37,7 +37,6 @@
         <activity android:name=".SetUpActivity" />
         <activity android:name=".ListActivity" />
         <activity android:name=".ListGroupWordsActivity" />
-        <activity android:name=".MainActivity" />
         <activity
             android:name=".Main2Activity"
             android:label="@string/title_activity_main2"
