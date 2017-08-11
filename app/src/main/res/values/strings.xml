@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">My Application_app_contest</string>
+    <string name="dialog_title">Solve</string>
+    <string name="message">なんの問題を解く？</string>
+    <string name="dialog_today">今日の問題</string>
+    <string name="dialog_weak"> 間違えやすい問題</string>
+    <string name="dialog_cancel">キャンセル</string>
+    <string name="title_activity_list_group_words">ListGroupWordsActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
