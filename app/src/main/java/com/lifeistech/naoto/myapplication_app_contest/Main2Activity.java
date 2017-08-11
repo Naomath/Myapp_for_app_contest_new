@@ -85,6 +85,11 @@ public class Main2Activity extends AppCompatActivity
         return true;
     }
 
+    public void make_Toast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
+    }
+
     public void solve(View view) {
         //今日の問題を解く処理
         showDialog_solve();
@@ -173,8 +178,5 @@ public class Main2Activity extends AppCompatActivity
         builder.show();
     }
 
-    public void make_Toast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
-    }
 }
