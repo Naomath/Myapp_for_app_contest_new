@@ -9,7 +9,7 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#55ffffff"
+    android:background="#C8ffffff"
     android:layout_alignParentTop="true"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true" />
@@ -20,7 +20,7 @@
         android:layout_marginTop="86dp"
         android:background="#00000000"
         android:text="technology"
-        android:textColor="#ffffff"
+        android:textColor="#000000"
         android:textSize="40sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />

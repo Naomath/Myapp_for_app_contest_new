@@ -175,7 +175,7 @@ public class SetUpActivity extends AppCompatActivity {
                 GroupTwoWords groupTwoWords = new GroupTwoWords(group_name, list);
                 groupTwoWords.save();
                 //ここでグループとしても登録する
-                Intent intent = new Intent(SetUpActivity.this, MainActivity.class);
+                Intent intent = new Intent(SetUpActivity.this, Main2Activity.class);
                 startActivity(intent);
             }
         });
