@@ -11,7 +11,7 @@ import android.widget.TextView;
  * Created by naoto on 2017/07/27.
  */
 
-public class ListGroupWordsListViewSetUp extends ArrayAdapter<TwoWordsForArray>{
+public class ListGroupWordsListViewSetUp extends ArrayAdapter<TwoWords>{
     Context mContext;
     LayoutInflater mLayoutInflater;
     int mCheck;
@@ -34,10 +34,10 @@ public class ListGroupWordsListViewSetUp extends ArrayAdapter<TwoWordsForArray>{
         } else {
             view_set_up = ((ListGroupWordsListViewSetUp.ViewSetUp3) convertView.getTag());
         }
-        TwoWordsForArray item = getItem(position);
+        TwoWords item = getItem(position);
         if(item != null){
-            view_set_up.japanese_textview.setText(item.getJAPANESE());
-            view_set_up.english_textview.setText(item.getENGLISH());
+            view_set_up.japanese_textview.setText(item.getJapanese());
+            view_set_up.english_textview.setText(item.getEnglish());
         }
         return convertView;
     }
@@ -50,8 +50,6 @@ public class ListGroupWordsListViewSetUp extends ArrayAdapter<TwoWordsForArray>{
         public ViewSetUp3(View view){
             japanese_textview = ((TextView)view.findViewById(R.id.textViewLGW1));
             english_textview = ((TextView)view.findViewById(R.id.textViewLGW2));
-            japanese_textview.setTextSize(30);
-            english_textview.setTextSize(30);
         }
     }
 }

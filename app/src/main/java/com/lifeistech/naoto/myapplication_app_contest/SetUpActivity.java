@@ -172,7 +172,10 @@ public class SetUpActivity extends AppCompatActivity {
                     list.add(two_words);
                 }
                 make_Toast("登録しました");
-                GroupTwoWords groupTwoWords = new GroupTwoWords(group_name, list);
+                int size = list.size();
+                TwoWords twoWords = list.get(0);
+                long first_id = twoWords.getId();
+                GroupTwoWords groupTwoWords = new GroupTwoWords(group_name, size, first_id);
                 groupTwoWords.save();
                 //ここでグループとしても登録する
                 Intent intent = new Intent(SetUpActivity.this, Main2Activity.class);

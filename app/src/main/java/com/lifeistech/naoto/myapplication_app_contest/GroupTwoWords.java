@@ -13,26 +13,21 @@ import java.util.List;
 public class GroupTwoWords extends SugarRecord {
     private String GROUP_NAME;
     //グループの名前
-    private List<TwoWordsForArray> LIST = new ArrayList<>();
-    // リストのフィールド
+    private int SIZE;
+    // リストのサイズ
+    private long FIRST_ID;
     public GroupTwoWords(){}
         //普通のコンストラクタ
 
-    public GroupTwoWords(String GROUP_NAME, List <TwoWords> LIST){
-        for(int i =0;i<LIST.size();i++) {
-           TwoWords twoWords = LIST.get(i);
-            String TITLE = twoWords.getTitle();
-            String JAPANESE = twoWords.getJapanese();
-            String ENGLISH = twoWords.getEnglish();
-            String DATE = twoWords.getDate();
-            TwoWordsForArray twoWordsForArray = new TwoWordsForArray(TITLE, JAPANESE, ENGLISH, DATE);
-            twoWordsForArray.save();
-            this.LIST.add(twoWordsForArray);
-        }
+    public GroupTwoWords(String GROUP_NAME, int SIZE, long FIRST_ID){
         this.GROUP_NAME = GROUP_NAME;
+        this.SIZE = SIZE;
+        this.FIRST_ID = FIRST_ID;
     }
 
     public String getGROUP_NAME(){return GROUP_NAME;}
 
-    public List<TwoWordsForArray> getList(){return LIST;}
+    public int getSIZE(){return SIZE;}
+
+    public long getFIRST_ID(){return FIRST_ID;}
 }

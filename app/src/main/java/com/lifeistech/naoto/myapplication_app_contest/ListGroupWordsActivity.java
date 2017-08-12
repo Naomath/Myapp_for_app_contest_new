@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.orm.SugarRecord;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +24,16 @@ public class ListGroupWordsActivity extends AppCompatActivity {
         ListGroupWordsListViewSetUp adapter = new ListGroupWordsListViewSetUp(this, R.layout.list_group_words_set_up);
         listView.setAdapter(adapter);
         //listviewの設定終了
+        //grouptwowordsの設定
         GroupTwoWords groupTwoWords = GroupTwoWords.findById(GroupTwoWords.class, id);
-        List<TwoWordsForArray> list = groupTwoWords.getList();
-        //うまく呼び出しはされている
-        for(int i = 0;; i++){
-            TwoWordsForArray twoWordsForArray = list.get(i);
-            if(twoWordsForArray != null){
-                adapter.add(twoWordsForArray);
-            }else {
-                break;
-            }
-            //twowordsをadapterにセットしている
+        String group_name = groupTwoWords.getGROUP_NAME();
+        int size = groupTwoWords.getSIZE();
+        long first_id = groupTwoWords.getFIRST_ID();
+        for (int i = 0;i<size;i++){
+            TwoWords twoWords = TwoWords.findById(TwoWords.class, first_id + i);
+            adapter.add(twoWords);
         }
+        TextView textView = (TextView)findViewById(R.id.textViewLGW0);
+        textView.setText(group_name);
     }
 }
