@@ -114,7 +114,7 @@ public class Main2Activity extends AppCompatActivity
                 public void onClick(DialogInterface dialogInterface, int i) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(Main2Activity.this);
                     builder.setTitle("消去");
-                    builder.setMessage("全件消去しますか？");
+                    builder.setMessage("全部消去しますか？");
                     builder.setNeutralButton("キャンセル", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
