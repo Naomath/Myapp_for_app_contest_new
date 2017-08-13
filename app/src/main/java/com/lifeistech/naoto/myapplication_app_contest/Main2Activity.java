@@ -2,25 +2,25 @@ package com.lifeistech.naoto.myapplication_app_contest;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.view.View;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    int mCheckedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +57,83 @@ public class Main2Activity extends AppCompatActivity
         if (id == R.id.nav_settings) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
-            Intent intent = new Intent(Main2Activity.this, SettingsActivity.class);
-            startActivity(intent);
-        }else if (id == R.id.nav_delete){
+            final String[] items = {" 先に和訳を表示する(デフォルト)", "先にスペルを表示する"};
+            final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Title");
+            alert.setSingleChoiceItems(items, mCheckedItem, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mCheckedItem = which;
+                }
+            });
+            alert.setPositiveButton("決定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (mCheckedItem == 0) {
+                        //先に和訳の時の処理
+                        SharedPreferences pref = getSharedPreferences("question_mode", MODE_PRIVATE);
+                        int mode = pref.getInt("question_mode", 0);
+                        mode = 0;
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putInt("question_mode", mode);
+                        editor.commit();
+                    } else {
+                        //先にスペルの時の処理
+                        SharedPreferences pref = getSharedPreferences("question_mode", MODE_PRIVATE);
+                        int mode = pref.getInt("question_mode", 0);
+                        mode = 1;
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putInt("question_mode", mode);
+                        editor.commit();
+                    }
+                }
+            });
+            alert.setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    dialog.dismiss();
+                }
+            });
+            alert.show();
+
+        } else if (id == R.id.nav_delete) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
-            Intent intent = new Intent(Main2Activity.this, DeleteActivity.class);
-            startActivity(intent);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("消去");
+            builder.setMessage("全件消去しますか？");
+            builder.setNeutralButton("キャンセル", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            builder.setPositiveButton("消去", new DialogInterface.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(Main2Activity.this);
+                    builder.setTitle("消去");
+                    builder.setMessage("全件消去しますか？");
+                    builder.setNeutralButton("キャンセル", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    builder.setPositiveButton("消去", new DialogInterface.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            TwoWords.deleteAll(TwoWords.class);
+                            TwoWordsWeak.deleteAll(TwoWordsWeak.class);
+                            GroupTwoWords.deleteAll(GroupTwoWords.class);
+                        }
+                    });
+                    builder.show();
+                }
+            });
+            builder.show();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -82,8 +152,36 @@ public class Main2Activity extends AppCompatActivity
 
     public void list(View view) {
         //リストについて処理
-        Intent intent = new Intent(Main2Activity.this, ListActivity.class);
-        startActivity(intent);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("単語リスト");
+        builder.setMessage("どのリストを見ますか？");
+        builder.setNegativeButton("間違えやすい", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //間違えやすいの
+                Intent intent = new Intent(Main2Activity.this, ListWeakActivity.class);
+                startActivity(intent);
+
+            }
+        });
+        builder.setPositiveButton("全部", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //普通の
+                Intent intent = new Intent(Main2Activity.this, ListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        builder.setNeutralButton("キャンセル", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //キャンセルする時の処理
+                dialogInterface.dismiss();
+            }
+        });
+
+        builder.show();
     }
 
     public void set_up(View view) {
@@ -95,14 +193,12 @@ public class Main2Activity extends AppCompatActivity
         //ダイアログを表示するメソッド
         //solveの時
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.dialog_title);
+        builder.setTitle("問題を解く");
         builder.setMessage(R.string.message);
         builder.setNegativeButton(R.string.dialog_today, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //今日の問題を解く時の処理
-
-
                 Intent intent = new Intent(Main2Activity.this, SolveActivity.class);
                 startActivity(intent);
                 //これからは引数を加え、今日の問題か、間違えやすい問題かわかるようにする
@@ -136,7 +232,7 @@ public class Main2Activity extends AppCompatActivity
         final EditText editText = new EditText(Main2Activity.this);
         //ダイアログで入力用のedittext
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Set Up");
+        builder.setTitle("単語を登録する");
         builder.setMessage("登録するグループの名前を何にしますか？");
         builder.setView(editText);
         builder.setNeutralButton("キャンセル", new DialogInterface.OnClickListener() {

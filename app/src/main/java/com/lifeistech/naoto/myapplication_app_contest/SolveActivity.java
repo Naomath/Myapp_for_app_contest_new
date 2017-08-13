@@ -1,25 +1,27 @@
 package com.lifeistech.naoto.myapplication_app_contest;
 
 import android.content.Intent;
-import android.graphics.Paint;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
 
+import com.orm.SugarRecord;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 public class SolveActivity extends AppCompatActivity {
 
     //問題を解く画面の提供
-    int test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_solve);
         Calendar calendar = Calendar.getInstance();
-        Calendar [] calendars = new Calendar[4];
+        Calendar[] calendars = new Calendar[4];
         //この場合、今日、昨日、9日前、35日前になる
         calendars[0] = calendar;
         calendar.add(Calendar.DAY_OF_YEAR, -1);
@@ -28,14 +30,56 @@ public class SolveActivity extends AppCompatActivity {
         calendars[2] = calendar;
         calendar.add(Calendar.DAY_OF_YEAR, -27);
         calendars[3] = calendar;
-
-
+        //年越しについては心配する必要はない
+        String calendar_str[] = new String[4];
+        calendar_str[0] = make_string_from_calendar(calendars[0]);
+        calendar_str[1] = make_string_from_calendar(calendars[1]);
+        calendar_str[2] = make_string_from_calendar(calendars[2]);
+        calendar_str[3] = make_string_from_calendar(calendars[3]);
+        //文字列の設定をしている
+        //次はTwoWordsの呼び出し
+        List<TwoWords> twoWordses = new ArrayList<>();
+        ArrayList<String> japaneses = new ArrayList<>();
+        ArrayList<String> englishes = new ArrayList<>();
+        ArrayList<Long> ids = new ArrayList<>();
+        List<TwoWords> list = SugarRecord.listAll(TwoWords.class);
+        int length_list = list.size();
+        for (int i = 0; i < length_list; i++) {
+            TwoWords twoWords = list.get(i);
+            String date_twowords = twoWords.getDate();
+            if (date_twowords.startsWith(calendar_str[0])) {
+                twoWordses.add(twoWords);
+            } else if (date_twowords.startsWith(calendar_str[1])) {
+                twoWordses.add(twoWords);
+            } else if (date_twowords.startsWith(calendar_str[2])) {
+                twoWordses.add(twoWords);
+            } else if (date_twowords.startsWith(calendar_str[3])) {
+                twoWordses.add(twoWords);
+            }
+        }
+        Collections.shuffle(list);
+        for (int i = 0; i < length_list; i++) {
+            TwoWords twoWords = list.get(i);
+            japaneses.add(twoWords.getJapanese());
+            englishes.add(twoWords.getEnglish());
+            ids.add(twoWords.getId());
+        }
+        Intent intent = new Intent(SolveActivity.this, Solve2Activity.class);
+        intent.putExtra("japaneses",japaneses);
+        intent.putExtra("englishes",englishes);
+        intent.putExtra("ids",ids);
+        startActivity(intent);
     }
 
-    public void go_to_answer(View view){
-        // 答えの画面に行く処理
-        Intent intent = new Intent(SolveActivity.this, AnswerActivity.class);
-        startActivity(intent);
-
+    public String make_string_from_calendar(Calendar calendar) {
+        int year = calendar.get(Calendar.YEAR);
+        int day = calendar.get(Calendar.DAY_OF_YEAR);
+        String year_str = Integer.toString(year);
+        String day_str = Integer.toString(day);
+        StringBuffer buf = new StringBuffer();
+        buf.append(year_str);
+        buf.append(day_str);
+        String calendar_str = buf.toString();
+        return calendar_str;
     }
 }

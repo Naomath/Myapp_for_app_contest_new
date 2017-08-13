@@ -10,6 +10,10 @@
             android:id="@+id/nav_delete"
             android:icon="@android:drawable/ic_menu_delete"
             android:title="消去" />
+        <item
+            android:id="@+id/nav_sns"
+            android:icon="@android:drawable/sym_action_chat"
+            android:title="SNSで送る" />
     </group>
 
 

@@ -33,7 +33,6 @@
 
         <activity android:name=".SolveActivity" />
         <activity android:name=".AnswerActivity" />
-        <activity android:name=".QuestionEndActivity" />
         <activity android:name=".SetUpActivity" />
         <activity android:name=".ListActivity" />
         <activity android:name=".ListGroupWordsActivity" />
@@ -41,9 +40,9 @@
             android:name=".Main2Activity"
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DeleteActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".SolveWeakActivity"></activity>
+        <activity android:name=".SolveWeakActivity" />
+        <activity android:name=".Solve2Activity" />
+        <activity android:name=".ListWeakActivity"></activity>
     </application>
 
 </manifest>

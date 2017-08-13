@@ -83,7 +83,7 @@ public class SetUpActivity extends AppCompatActivity {
                 String english_string = english_editText.getText().toString();
                 if (japanese_string == null) {
                     make_Toast("和訳が書かれていません");
-                } else if (english_editText == null) {
+                } else if (english_string == null) {
                     make_Toast("スペルが書かれていません");
                 } else {
                     TwoWordsForSet twoWordsForSet = new TwoWordsForSet(japanese_string, english_string);
@@ -145,14 +145,10 @@ public class SetUpActivity extends AppCompatActivity {
                     Calendar calendar = Calendar.getInstance();
                     final int year = calendar.get(Calendar.YEAR);
                     String year_string = Integer.toString(year);
-                    final int month = calendar.get(Calendar.MONTH) + 1;
-                    //monthは0から値が始まるから
-                    String month_string = Integer.toString(month);
                     final int day = calendar.get(Calendar.DAY_OF_MONTH);
                     String day_string = Integer.toString(day);
                     StringBuffer buf = new StringBuffer();
                     buf.append(year_string);
-                    buf.append(month_string);
                     buf.append(day_string);
                     String date = buf.toString();
                     SharedPreferences preferences = getSharedPreferences(date, MODE_PRIVATE);
