@@ -1,22 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/pexelsphoto_woods"
     tools:context="com.lifeistech.naoto.myapplication_app_contest.ListActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#C8ffffff" />
-    <ListView
+        android:background="#99ffffff" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/listView2"
-        android:cacheColorHint="#00000000"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewL0"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="40dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:text="リストをクリックするとそのグループの単語がみれます"
+            android:textColor="#000000"
+            android:textSize="13dp" />
+
+        <ListView
+            android:id="@+id/listView2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="24"
+            android:cacheColorHint="#00000000"
+            android:divider="#00000000"
+            android:dividerHeight="7dp" />
+
+    </LinearLayout>
 
 </RelativeLayout>

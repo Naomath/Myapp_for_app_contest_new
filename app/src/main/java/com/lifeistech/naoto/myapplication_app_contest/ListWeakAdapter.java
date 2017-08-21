@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -37,8 +38,7 @@ public class ListWeakAdapter extends ArrayAdapter<TwoWordsWeak>{
         TwoWordsWeak item = getItem(position);
         if(item != null){
             view_set_up.wordsJapanese.setText(item.getWORDS_JAPANESE());
-            view_set_up.wordsEnglish.setText(item.getWRDS_ENGLISH());
-
+            view_set_up.wordsEnglish.setText(item.getWORDS_ENGLISH());
         }
         return convertView;
     }
@@ -47,9 +47,11 @@ public class ListWeakAdapter extends ArrayAdapter<TwoWordsWeak>{
         // Listviewのカスタマイズしている
         TextView wordsJapanese;
         TextView wordsEnglish;
+        ImageView imageView;
         public ViewSetUp(View view){
             wordsJapanese = (TextView)view.findViewById(R.id.textView_adapter_weak);
             wordsEnglish = (TextView)view.findViewById(R.id.textView_adapter_weak1);
+            imageView = (ImageView)view.findViewById(R.id.imageView8);
         }
     }
 }

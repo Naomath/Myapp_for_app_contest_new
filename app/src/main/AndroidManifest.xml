@@ -6,7 +6,7 @@
         android:name=".SugarOrmControl"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/flashcards_icon1"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
@@ -36,13 +36,13 @@
         <activity android:name=".SetUpActivity" />
         <activity android:name=".ListActivity" />
         <activity android:name=".ListGroupWordsActivity" />
-        <activity
-            android:name=".Main2Activity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SolveWeakActivity" />
         <activity android:name=".Solve2Activity" />
-        <activity android:name=".ListWeakActivity"></activity>
+        <activity android:name=".ListWeakActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

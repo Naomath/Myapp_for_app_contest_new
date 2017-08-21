@@ -12,30 +12,44 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class Main2Activity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
     int mCheckedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
-        DrawerLayout mDrawerLayoutr = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayoutr.openDrawer(GravityCompat.START);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        Intent intent = getIntent();
+        int end_number = intent.getIntExtra("end", 0);
+        if (end_number == 1) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("終了");
+            builder.setMessage("出す問題がありません");
+            builder.setPositiveButton("終了", new DialogInterface.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            builder.show();
+        }
     }
 
     @Override
@@ -48,17 +62,20 @@ public class Main2Activity extends AppCompatActivity
         }
     }
 
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        //Navigationdrawerのitemがタッチされた時の処理
-        if (id == R.id.nav_settings) {
+        if (id == R.id.nav_delete) {
+
+
+        } else if (id == R.id.nav_settings) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
             final String[] items = {" 先に和訳を表示する(デフォルト)", "先にスペルを表示する"};
-            final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
             alert.setTitle("Title");
             alert.setSingleChoiceItems(items, mCheckedItem, new DialogInterface.OnClickListener() {
                 @Override
@@ -95,8 +112,7 @@ public class Main2Activity extends AppCompatActivity
                 }
             });
             alert.show();
-
-        } else if (id == R.id.nav_delete) {
+        } else if (id == R.id.nav_sns) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -112,7 +128,7 @@ public class Main2Activity extends AppCompatActivity
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(Main2Activity.this);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setTitle("消去");
                     builder.setMessage("全部消去しますか？");
                     builder.setNeutralButton("キャンセル", new DialogInterface.OnClickListener() {
@@ -134,6 +150,12 @@ public class Main2Activity extends AppCompatActivity
                 }
             });
             builder.show();
+        } else if (id == R.id.nav_registration) {
+            showDialog_set_up();
+        } else if (id == R.id.nav_list) {
+            show_dialog_list();
+        } else if (id == R.id.nav_solve) {
+            showDialog_solve();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -150,43 +172,13 @@ public class Main2Activity extends AppCompatActivity
         showDialog_solve();
     }
 
-    public void list(View view) {
-        //リストについて処理
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("単語リスト");
-        builder.setMessage("どのリストを見ますか？");
-        builder.setNegativeButton("間違えやすい", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //間違えやすいの
-                Intent intent = new Intent(Main2Activity.this, ListWeakActivity.class);
-                startActivity(intent);
-
-            }
-        });
-        builder.setPositiveButton("全部", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //普通の
-                Intent intent = new Intent(Main2Activity.this, ListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        builder.setNeutralButton("キャンセル", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //キャンセルする時の処理
-                dialogInterface.dismiss();
-            }
-        });
-
-        builder.show();
-    }
-
     public void set_up(View view) {
         // 問題を登録する処理
         showDialog_set_up();
+    }
+
+    public void list(View view) {
+        show_dialog_list();
     }
 
     public void showDialog_solve() {
@@ -199,9 +191,8 @@ public class Main2Activity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //今日の問題を解く時の処理
-                Intent intent = new Intent(Main2Activity.this, SolveActivity.class);
+                Intent intent = new Intent(MainActivity.this, SolveActivity.class);
                 startActivity(intent);
-                //これからは引数を加え、今日の問題か、間違えやすい問題かわかるようにする
 
             }
         });
@@ -209,10 +200,8 @@ public class Main2Activity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //間違えやすい問題を解く時の処理
-                Intent intent = new Intent(Main2Activity.this, SolveActivity.class);
+                Intent intent = new Intent(MainActivity.this, SolveWeakActivity.class);
                 startActivity(intent);
-                //これからは引数を加え、今日の問題か、間違えやすい問題かわかるようにする
-
             }
         });
 
@@ -229,7 +218,7 @@ public class Main2Activity extends AppCompatActivity
 
     public void showDialog_set_up() {
         // 登録のダイアログ
-        final EditText editText = new EditText(Main2Activity.this);
+        final EditText editText = new EditText(MainActivity.this);
         //ダイアログで入力用のedittext
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("単語を登録する");
@@ -250,7 +239,7 @@ public class Main2Activity extends AppCompatActivity
                 if (group_name.length() == 0) {
                     make_Toast("グループの名前が登録されていません");
                 } else {
-                    Intent intent = new Intent(Main2Activity.this, SetUpActivity.class);
+                    Intent intent = new Intent(MainActivity.this, SetUpActivity.class);
                     intent.putExtra("group_name", group_name);
                     startActivity(intent);
                 }
@@ -259,5 +248,38 @@ public class Main2Activity extends AppCompatActivity
         builder.show();
     }
 
+    public void show_dialog_list() {
+        //リストについて処理
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("単語リスト");
+        builder.setMessage("どのリストを見ますか？");
+        builder.setNegativeButton("間違えやすい", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //間違えやすいの
+                Intent intent = new Intent(MainActivity.this, ListWeakActivity.class);
+                startActivity(intent);
+
+            }
+        });
+        builder.setPositiveButton("全部", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //普通の
+                Intent intent = new Intent(MainActivity.this, ListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        builder.setNeutralButton("キャンセル", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //キャンセルする時の処理
+                dialogInterface.dismiss();
+            }
+        });
+
+        builder.show();
+    }
 
 }

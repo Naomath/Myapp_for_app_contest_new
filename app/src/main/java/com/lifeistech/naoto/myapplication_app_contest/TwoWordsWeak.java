@@ -8,40 +8,34 @@ import com.orm.SugarRecord;
 
 public class TwoWordsWeak extends SugarRecord {
     //一単語づつで管理する
-    private String TITLE;
-    //グループの名前
     private String WORDS_JAPANESE;
     //wordの和訳
-    private String WRDS_ENGLISH;
+    private String WORDS_ENGLISH;
     //wordのスペルの管理
-    private int SIZE;
-    //なん個目に登録したか
 
     public TwoWordsWeak() {
         //普通のコンストラクタ
         //使うことはない
     }
 
-    public TwoWordsWeak(String TITLE, String WORDS_JAPANESE, String WORDS_ENGLISH, int SIZE) {
-        this.TITLE = TITLE;
+    public TwoWordsWeak(String WORDS_JAPANESE, String WORDS_ENGLISH) {
         this.WORDS_JAPANESE = WORDS_JAPANESE;
-        this.WRDS_ENGLISH = WORDS_ENGLISH;
-        this.SIZE = SIZE;
-    }
-
-    public String getTITLE() {
-        return TITLE;
+        this.WORDS_ENGLISH = WORDS_ENGLISH;
     }
 
     public String getWORDS_JAPANESE() {
         return WORDS_JAPANESE;
     }
 
-    public String getWRDS_ENGLISH() {
-        return WRDS_ENGLISH;
+    public String getWORDS_ENGLISH() {
+        return WORDS_ENGLISH;
     }
 
-    public int getSIZE() {
-        return SIZE;
+    public void setWORDS_JAPANESE(String WORDS_JAPANESE) {
+        this.WORDS_JAPANESE = WORDS_JAPANESE;
+    }
+
+    public void setWORDS_ENGLISH(String WORDS_ENGLISH) {
+        this.WORDS_ENGLISH = WORDS_ENGLISH;
     }
 }

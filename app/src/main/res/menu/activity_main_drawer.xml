@@ -3,6 +3,18 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_solve"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="問題を解く" />
+        <item
+            android:id="@+id/nav_list"
+            android:icon="@drawable/list_icon_gray"
+            android:title="単語リスト" />
+        <item
+            android:id="@+id/nav_registration"
+            android:icon="@android:drawable/ic_menu_add"
+            android:title="登録" />
+        <item
             android:id="@+id/nav_settings"
             android:icon="@android:drawable/ic_menu_manage"
             android:title="出題形式の設定" />
@@ -14,6 +26,7 @@
             android:id="@+id/nav_sns"
             android:icon="@android:drawable/sym_action_chat"
             android:title="SNSで送る" />
+
     </group>
 
 

@@ -37,4 +37,8 @@ public class TwoWords extends SugarRecord {
     public String getTitle(){return title;}
 
     public String getDate(){return date;}
+
+    public void setJapanese(String words_japanese){this.words_japanese = words_japanese;}
+
+    public void setEnglish(String words_english){this.words_english = words_english;}
 }

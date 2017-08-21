@@ -16,6 +16,7 @@ public class Solve2Activity extends AppCompatActivity {
     ArrayList<String> englishes;
     ArrayList<String> ids;
     int number;
+    int mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +25,8 @@ public class Solve2Activity extends AppCompatActivity {
         Intent intent = getIntent();
         japaneses = intent.getStringArrayListExtra("japaneses");
         englishes = intent.getStringArrayListExtra("englishes");
-        ids = intent.getStringArrayListExtra("ids");
         number = intent.getIntExtra("number", 0);
+        mode = intent.getIntExtra("mode", 0);
         TextView textView = (TextView) findViewById(R.id.textView);
         SharedPreferences pref = getSharedPreferences("question_mode", MODE_PRIVATE);
         int mode = pref.getInt("question_mode",0);
@@ -41,7 +42,7 @@ public class Solve2Activity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent intent = new Intent(this, Main2Activity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             return false;
         } else {
@@ -54,8 +55,8 @@ public class Solve2Activity extends AppCompatActivity {
         Intent intent = new Intent(this, AnswerActivity.class);
         intent.putExtra("japaneses", japaneses);
         intent.putExtra("englishes", englishes);
-        intent.putExtra("ids", ids);
         intent.putExtra("number", number);
+        intent.putExtra("mode", mode);
         startActivity(intent);
     }
 }

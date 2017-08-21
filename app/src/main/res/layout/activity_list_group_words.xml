@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/pexelsphoto_woods"
+    android:background="#ffffff"
     tools:context="com.lifeistech.naoto.myapplication_app_contest.ListGroupWordsActivity">
+    <include layout="@layout/content_main" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#C8ffffff" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,12 +19,22 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textViewLGW0"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:textSize="50dp"
-            android:id="@+id/textViewLGW0"
-            android:fontFamily="sans-serif-medium"/>
+            android:fontFamily="sans-serif-medium"
+            android:textSize="40dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:fontFamily="sans-serif-medium"
+            android:text="単語をクリックするとその単語のセッティングを開けます"
+            android:textColor="#000000"
+            android:textSize="13dp" />
+
 
         <ListView
             android:id="@+id/listview_LGW"
@@ -26,6 +43,25 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_weight="8"
-            android:cacheColorHint="#000000" />
+            android:divider="#00000000"
+            android:dividerHeight="7dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

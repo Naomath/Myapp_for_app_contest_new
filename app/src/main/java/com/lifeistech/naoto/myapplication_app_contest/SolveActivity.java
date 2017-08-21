@@ -1,13 +1,13 @@
 package com.lifeistech.naoto.myapplication_app_contest;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-
 import com.orm.SugarRecord;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -41,11 +41,8 @@ public class SolveActivity extends AppCompatActivity {
         List<TwoWords> twoWordses = new ArrayList<>();
         ArrayList<String> japaneses = new ArrayList<>();
         ArrayList<String> englishes = new ArrayList<>();
-        ArrayList<Long> ids = new ArrayList<>();
         List<TwoWords> list = SugarRecord.listAll(TwoWords.class);
-        int length_list = list.size();
-        for (int i = 0; i < length_list; i++) {
-            TwoWords twoWords = list.get(i);
+        for (TwoWords twoWords : list) {
             String date_twowords = twoWords.getDate();
             if (date_twowords.startsWith(calendar_str[0])) {
                 twoWordses.add(twoWords);
@@ -57,18 +54,22 @@ public class SolveActivity extends AppCompatActivity {
                 twoWordses.add(twoWords);
             }
         }
-        Collections.shuffle(list);
-        for (int i = 0; i < length_list; i++) {
-            TwoWords twoWords = list.get(i);
-            japaneses.add(twoWords.getJapanese());
-            englishes.add(twoWords.getEnglish());
-            ids.add(twoWords.getId());
+        if(twoWordses.size() == 0){
+            show_dialog_end();
+        }else {
+            Collections.shuffle(list);
+            for(TwoWords twoWords:twoWordses){
+                japaneses.add(twoWords.getJapanese());
+                englishes.add(twoWords.getEnglish());
+            }
+            //プリファレンスの設定
+            Intent intent = new Intent(SolveActivity.this, Solve2Activity.class);
+            intent.putExtra("japaneses", japaneses);
+            intent.putExtra("englishes", englishes);
+            intent.putExtra("number", 0);
+            intent.putExtra("mode", 0);
+            startActivity(intent);
         }
-        Intent intent = new Intent(SolveActivity.this, Solve2Activity.class);
-        intent.putExtra("japaneses",japaneses);
-        intent.putExtra("englishes",englishes);
-        intent.putExtra("ids",ids);
-        startActivity(intent);
     }
 
     public String make_string_from_calendar(Calendar calendar) {
@@ -82,4 +83,10 @@ public class SolveActivity extends AppCompatActivity {
         String calendar_str = buf.toString();
         return calendar_str;
     }
+    public void show_dialog_end(){
+        Intent intent = new Intent(SolveActivity.this, MainActivity.class);
+        intent.putExtra("end",1);
+        startActivity(intent);
+    }
+
 }

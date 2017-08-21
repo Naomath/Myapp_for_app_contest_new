@@ -145,7 +145,7 @@ public class SetUpActivity extends AppCompatActivity {
                     Calendar calendar = Calendar.getInstance();
                     final int year = calendar.get(Calendar.YEAR);
                     String year_string = Integer.toString(year);
-                    final int day = calendar.get(Calendar.DAY_OF_MONTH);
+                    final int day = calendar.get(Calendar.DAY_OF_YEAR);
                     String day_string = Integer.toString(day);
                     StringBuffer buf = new StringBuffer();
                     buf.append(year_string);
@@ -174,7 +174,7 @@ public class SetUpActivity extends AppCompatActivity {
                 GroupTwoWords groupTwoWords = new GroupTwoWords(group_name, size, first_id);
                 groupTwoWords.save();
                 //ここでグループとしても登録する
-                Intent intent = new Intent(SetUpActivity.this, Main2Activity.class);
+                Intent intent = new Intent(SetUpActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
