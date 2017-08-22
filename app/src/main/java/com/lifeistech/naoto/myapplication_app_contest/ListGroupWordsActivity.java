@@ -3,6 +3,7 @@ package com.lifeistech.naoto.myapplication_app_contest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,6 +18,7 @@ public class ListGroupWordsActivity extends AppCompatActivity {
     EditText editText;
     EditText editText1;
     TwoWords twoWords;
+    GroupTwoWords groupTwoWords;
     long id;
 
     @Override
@@ -92,7 +94,7 @@ public class ListGroupWordsActivity extends AppCompatActivity {
         //listviewとadapterの設定終了
         //grouptwowordsの設定
         int number = 0;
-        GroupTwoWords groupTwoWords = GroupTwoWords.findById(GroupTwoWords.class, id);
+        groupTwoWords = GroupTwoWords.findById(GroupTwoWords.class, id);
         String group_name = groupTwoWords.getGROUP_NAME();
         int size = groupTwoWords.getSIZE();
         long first_id = groupTwoWords.getFIRST_ID();
@@ -106,7 +108,33 @@ public class ListGroupWordsActivity extends AppCompatActivity {
         }
         //TextViewの設定
         TextView textView = (TextView) findViewById(R.id.textViewLGW0);
-        textView.setText(String.valueOf(id));
+        textView.setText(groupTwoWords.getGROUP_NAME());
+        //fabの設定
+        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                show_dialog_fab();
+            }
+        });
+    }
+
+    public void show_dialog_fab(){
+        final String[] items = {"このグループの確認をする","グループを消去"};
+        new AlertDialog.Builder(ListGroupWordsActivity.this)
+                .setTitle("どうしますか？")
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                       if(which == 0){
+
+                       } else if(which ==1){
+                           
+                       }
+                    }
+                })
+                .setNegativeButton("キャンセル", null)
+                .show();
     }
 
 }

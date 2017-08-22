@@ -8,6 +8,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="3dp"
         android:background="@drawable/linearlayout_shadow">
 
         <LinearLayout

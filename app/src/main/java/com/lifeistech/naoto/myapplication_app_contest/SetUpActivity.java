@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -42,6 +43,14 @@ public class SetUpActivity extends AppCompatActivity {
         adapter = new ListviewSetUp(this, R.layout.listview_set_up);
         listView.setAdapter(adapter);
         list = new ArrayList<>();
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                TwoWordsForSet item = (TwoWordsForSet)adapter.getItem(i);
+                adapter.remove(item);
+                return false;
+            }
+        });
     }
 
     public void dialog_set_up(View view) {

@@ -25,6 +25,7 @@ public class Solve2Activity extends AppCompatActivity {
         Intent intent = getIntent();
         japaneses = intent.getStringArrayListExtra("japaneses");
         englishes = intent.getStringArrayListExtra("englishes");
+        ids = intent.getStringArrayListExtra("ids");
         number = intent.getIntExtra("number", 0);
         mode = intent.getIntExtra("mode", 0);
         TextView textView = (TextView) findViewById(R.id.textView);
@@ -55,6 +56,7 @@ public class Solve2Activity extends AppCompatActivity {
         Intent intent = new Intent(this, AnswerActivity.class);
         intent.putExtra("japaneses", japaneses);
         intent.putExtra("englishes", englishes);
+        intent.putExtra("ids", ids);
         intent.putExtra("number", number);
         intent.putExtra("mode", mode);
         startActivity(intent);

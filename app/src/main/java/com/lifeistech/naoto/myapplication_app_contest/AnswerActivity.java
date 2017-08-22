@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.orm.SugarRecord;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -19,6 +21,7 @@ public class AnswerActivity extends AppCompatActivity {
     //問題の答を表示するActivity
     ArrayList<String> japaneses;
     ArrayList<String> englishes;
+    ArrayList<String> ids;
     int number;
     int mode;
 
@@ -29,6 +32,7 @@ public class AnswerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         japaneses = intent.getStringArrayListExtra("japaneses");
         englishes = intent.getStringArrayListExtra("englishes");
+        ids = intent.getStringArrayListExtra("ids");
         number = intent.getIntExtra("number", 0);
         mode = intent.getIntExtra("mode", 0);
         TextView textView = (TextView) findViewById(R.id.textView3);
@@ -46,24 +50,7 @@ public class AnswerActivity extends AppCompatActivity {
     public void know(View view) {
         //わかっていた時の処理
         if (number + 1 == japaneses.size()) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("終わり");
-            builder.setMessage("どうしますか？");
-            builder.setNeutralButton("終了", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent = new Intent(AnswerActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-            });
-            builder.setPositiveButton("もう一度やる", new DialogInterface.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    thinkMode();
-                }
-            });
-            builder.show();
+            show_dialog_end();
         } else {
             Intent intent = new Intent(AnswerActivity.this, Solve2Activity.class);
             intent.putExtra("japaneses", japaneses);
@@ -78,30 +65,22 @@ public class AnswerActivity extends AppCompatActivity {
         //わからなかった時の処理
         //TwowordsWeakの登録
         if(mode == 0){
-            TwoWordsWeak twoWordsWeak = new TwoWordsWeak(japaneses.get(number), englishes.get(number));
-            twoWordsWeak.save();
+            long id = Long.parseLong(ids.get(number));
+            TwoWords twoWords = SugarRecord.findById(TwoWords.class, id);
+            if(twoWords.getWeak() == 1){
+                //もうすでに間違えている場合の処理
+                show_dialog_end();
+            } else {
+                twoWords.setWeak(1);
+                twoWords.save();
+                TwoWordsWeak twoWordsWeak = new TwoWordsWeak(japaneses.get(number), englishes.get(number));
+                twoWordsWeak.save();
+            }
+
         }
         //画面遷移
         if (number + 1 == japaneses.size()) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("終わり");
-            builder.setMessage("どうしますか？");
-            builder.setNeutralButton("終了", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent = new Intent(AnswerActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-            });
-            builder.setPositiveButton("もう一度やる", new DialogInterface.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    thinkMode();
-                }
-            });
-
-            builder.show();
+            show_dialog_end();
         } else {
             Intent intent = new Intent(AnswerActivity.this, Solve2Activity.class);
             intent.putExtra("japaneses", japaneses);
@@ -119,5 +98,25 @@ public class AnswerActivity extends AppCompatActivity {
             Intent intent = new Intent(AnswerActivity.this, SolveWeakActivity.class);
             startActivity(intent);
         }
+    }
+
+    public void show_dialog_end(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("終わり");
+        builder.setMessage("どうしますか？");
+        builder.setNeutralButton("終了", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(AnswerActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        builder.setPositiveButton("もう一度やる", new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                thinkMode();
+            }
+        });
     }
 }

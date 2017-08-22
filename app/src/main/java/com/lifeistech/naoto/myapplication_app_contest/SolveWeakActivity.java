@@ -24,6 +24,7 @@ public class SolveWeakActivity extends AppCompatActivity {
         Collections.shuffle(list);
         ArrayList<String> japaneses = new ArrayList<>();
         ArrayList<String> englishes = new ArrayList<>();
+        ArrayList<String> ids = new ArrayList<>();
         if(list.size() == 0){
             show_dialog_end();
         }else {
@@ -31,10 +32,12 @@ public class SolveWeakActivity extends AppCompatActivity {
             for (TwoWordsWeak twoWordsWeak:list){
                 japaneses.add(twoWordsWeak.getWORDS_JAPANESE());
                 englishes.add(twoWordsWeak.getWORDS_ENGLISH());
+                ids.add(String.valueOf(twoWordsWeak.getId()));
             }
             Intent intent = new Intent(SolveWeakActivity.this, Solve2Activity.class);
             intent.putExtra("japaneses",japaneses);
             intent.putExtra("englishes",englishes);
+            intent.putExtra("ids",ids);
             intent.putExtra("number",0);
             intent.putExtra("mode",1);
             startActivity(intent);

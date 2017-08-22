@@ -6,8 +6,8 @@
         android:name=".SugarOrmControl"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:icon="@drawable/flashcards_icon1"
-        android:label="@string/app_name"
+        android:icon="@drawable/icon1"
+        android:label="バカ天"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".SplashActivity">
