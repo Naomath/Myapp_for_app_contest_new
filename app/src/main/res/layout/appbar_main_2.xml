@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#8d6e63"
-    tools:context="com.lifeistech.naoto.myapplication_app_contest.MainActivity">
+    tools:context="com.lifeistech.naoto.myapplication_app_contest.Activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -118,7 +118,7 @@
                                     android:layout_marginRight="10dp"
                                     android:layout_marginTop="10dp"
                                     android:scaleType="fitCenter"
-                                    app:srcCompat="@drawable/list_icon_gray" />
+                                    app:srcCompat="@drawable/icon_list" />
                             </RelativeLayout>
 
                             <RelativeLayout

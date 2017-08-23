@@ -1,4 +1,4 @@
-package com.lifeistech.naoto.myapplication_app_contest;
+package com.lifeistech.naoto.myapplication_app_contest.Activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -11,6 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.lifeistech.naoto.myapplication_app_contest.adapters.ListWeakAdapter;
+import com.lifeistech.naoto.myapplication_app_contest.R;
+import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWordsWeak;
 import com.orm.SugarRecord;
 
 import java.util.List;

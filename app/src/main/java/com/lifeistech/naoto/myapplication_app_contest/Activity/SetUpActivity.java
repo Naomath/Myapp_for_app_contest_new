@@ -1,4 +1,4 @@
-package com.lifeistech.naoto.myapplication_app_contest;
+package com.lifeistech.naoto.myapplication_app_contest.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.lifeistech.naoto.myapplication_app_contest.R;
+import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.Class.TwoWordsForSet;
+import com.lifeistech.naoto.myapplication_app_contest.adapters.ListviewSetUp;
 
 import java.util.ArrayList;
 import java.util.List;

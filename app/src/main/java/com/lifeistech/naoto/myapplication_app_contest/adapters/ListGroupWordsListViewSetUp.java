@@ -1,4 +1,4 @@
-package com.lifeistech.naoto.myapplication_app_contest;
+package com.lifeistech.naoto.myapplication_app_contest.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.lifeistech.naoto.myapplication_app_contest.R;
+import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
 
 /**
  * Created by naoto on 2017/07/27.

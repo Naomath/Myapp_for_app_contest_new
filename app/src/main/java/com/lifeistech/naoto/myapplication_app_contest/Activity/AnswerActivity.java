@@ -1,4 +1,4 @@
-package com.lifeistech.naoto.myapplication_app_contest;
+package com.lifeistech.naoto.myapplication_app_contest.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,10 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.lifeistech.naoto.myapplication_app_contest.R;
+import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWordsWeak;
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class AnswerActivity extends AppCompatActivity {
 
@@ -24,6 +26,7 @@ public class AnswerActivity extends AppCompatActivity {
     ArrayList<String> ids;
     int number;
     int mode;
+    long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class AnswerActivity extends AppCompatActivity {
         ids = intent.getStringArrayListExtra("ids");
         number = intent.getIntExtra("number", 0);
         mode = intent.getIntExtra("mode", 0);
+        id = intent.getLongExtra("id_group", 0);
         TextView textView = (TextView) findViewById(R.id.textView3);
         SharedPreferences pref = getSharedPreferences("question_mode", MODE_PRIVATE);
         mode = pref.getInt("question_mode", 0);
@@ -64,10 +68,10 @@ public class AnswerActivity extends AppCompatActivity {
     public void dont_know(View view) {
         //わからなかった時の処理
         //TwowordsWeakの登録
-        if(mode == 0){
+        if (mode == 0) {
             long id = Long.parseLong(ids.get(number));
             TwoWords twoWords = SugarRecord.findById(TwoWords.class, id);
-            if(twoWords.getWeak() == 1){
+            if (twoWords.getWeak() == 1) {
                 //もうすでに間違えている場合の処理
                 show_dialog_end();
             } else {
@@ -90,25 +94,39 @@ public class AnswerActivity extends AppCompatActivity {
         }
     }
 
-    public void thinkMode(){
-        if(mode == 0){
+    public void thinkMode() {
+        if (mode == 0) {
             Intent intent = new Intent(AnswerActivity.this, SolveActivity.class);
             startActivity(intent);
-        } else {
+        } else if (mode == 1) {
             Intent intent = new Intent(AnswerActivity.this, SolveWeakActivity.class);
+            startActivity(intent);
+        } else if (mode == 2) {
+            Intent intent = new Intent(AnswerActivity.this, SolveGroupActivity.class);
+            intent.putExtra("id_group", id);
             startActivity(intent);
         }
     }
 
-    public void show_dialog_end(){
+    public void thinkModeEnd() {
+        if (mode == 2) {
+            Intent intent = new Intent(this, ListGroupWordsActivity.class);
+            intent.putExtra("ID_GROUP_TWOWORDS", id);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(AnswerActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    public void show_dialog_end() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("終わり");
         builder.setMessage("どうしますか？");
         builder.setNeutralButton("終了", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(AnswerActivity.this, MainActivity.class);
-                startActivity(intent);
+                thinkModeEnd();
             }
         });
         builder.setPositiveButton("もう一度やる", new DialogInterface.OnClickListener() {
@@ -118,5 +136,6 @@ public class AnswerActivity extends AppCompatActivity {
                 thinkMode();
             }
         });
+        builder.show();
     }
 }

@@ -1,4 +1,4 @@
-package com.lifeistech.naoto.myapplication_app_contest;
+package com.lifeistech.naoto.myapplication_app_contest.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +12,17 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.lifeistech.naoto.myapplication_app_contest.adapters.ListGroupWordsListViewSetUp;
+import com.lifeistech.naoto.myapplication_app_contest.R;
+import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
+import com.orm.SugarRecord;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ListGroupWordsActivity extends AppCompatActivity {
 
@@ -20,6 +31,7 @@ public class ListGroupWordsActivity extends AppCompatActivity {
     TwoWords twoWords;
     GroupTwoWords groupTwoWords;
     long id;
+    long id_solve;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +82,10 @@ public class ListGroupWordsActivity extends AppCompatActivity {
                                 twoWords.setJapanese(null);
                                 twoWords.setEnglish(null);
                                 twoWords.save();
+                                Toast.makeText(ListGroupWordsActivity.this,"消去しました", Toast.LENGTH_SHORT).show();
                             }
                         });
+                        builder1.show();
                     }
                 });
                 builder.setNeutralButton("キャンセル", new DialogInterface.OnClickListener() {
@@ -86,6 +100,7 @@ public class ListGroupWordsActivity extends AppCompatActivity {
                         twoWords.setJapanese(editText.getText().toString());
                         twoWords.setEnglish(editText1.getText().toString());
                         twoWords.save();
+                        Toast.makeText(ListGroupWordsActivity.this,"登録しました", Toast.LENGTH_SHORT).show();
                     }
                 });
                 builder.show();
@@ -127,13 +142,79 @@ public class ListGroupWordsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                        if(which == 0){
-
+                           Intent intent = new Intent(ListGroupWordsActivity.this, SolveGroupActivity.class);
+                           intent.putExtra("id_group", groupTwoWords.getId());
+                           startActivity(intent);
                        } else if(which ==1){
-                           
+                           group_delete();
                        }
                     }
                 })
                 .setNegativeButton("キャンセル", null)
+                .show();
+    }
+
+    public void group_solve(){
+        List<TwoWords> list = new ArrayList<>();
+        long firdt_id = groupTwoWords.getFIRST_ID();
+        for(int i = 0;i<groupTwoWords.getSIZE();i++,firdt_id++){
+            TwoWords twoWords = SugarRecord.findById(TwoWords.class, firdt_id);
+            if(twoWords.getJapanese() == null){
+                break;
+            } else {
+                list.add(twoWords);
+            }
+        }
+        Collections.shuffle(list);
+        ArrayList<String> japaneses = new ArrayList<>();
+        ArrayList<String> englishes = new ArrayList<>();
+        for (TwoWords twoWords:list){
+            japaneses.add(twoWords.getJapanese());
+            englishes.add(twoWords.getEnglish());
+        }
+        Intent intent = new Intent(ListGroupWordsActivity.this, Solve2Activity.class);
+        intent.putExtra("japaneses", japaneses);
+        intent.putExtra("englishes", englishes);
+        intent.putExtra("number", 0);
+        intent.putExtra("mode", 2);
+        startActivity(intent);
+    }
+    public void group_delete(){
+        new AlertDialog.Builder(ListGroupWordsActivity.this)
+                .setTitle("消去")
+                .setMessage("このグループを消去していいですか？")
+                .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        new AlertDialog.Builder(ListGroupWordsActivity.this)
+                                .setTitle("確認")
+                                .setMessage("本当に消去していいですか")
+                                .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        long id = groupTwoWords.getFIRST_ID();
+                                        for (int i2 = 0; i < groupTwoWords.getSIZE(); i++, id++) {
+                                            TwoWords twoWords = SugarRecord.findById(TwoWords.class, id);
+                                            twoWords.delete();
+                                            groupTwoWords.delete();
+                                        }
+                                    }
+                                })
+                                .show();
+                    }
+                })
                 .show();
     }
 

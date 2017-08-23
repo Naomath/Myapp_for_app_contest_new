@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/pexelsphoto_woods"
-    tools:context="com.lifeistech.naoto.myapplication_app_contest.MainActivity">
+    tools:context="com.lifeistech.naoto.myapplication_app_contest.Activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

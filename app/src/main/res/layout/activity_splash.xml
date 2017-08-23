@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context="com.lifeistech.naoto.myapplication_app_contest.SplashActivity">
+    tools:context="com.lifeistech.naoto.myapplication_app_contest.Activity.SplashActivity">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -20,19 +20,4 @@
         android:scaleType="fitCenter"
         android:layout_alignParentEnd="true" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#559E9E9E">
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textColor="#000000"
-        android:textSize="50dp" />
 </RelativeLayout>

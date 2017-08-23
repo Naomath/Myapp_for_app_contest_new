@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lifeistech.naoto.myapplication_app_contest.Solve2Activity"
+    tools:context="com.lifeistech.naoto.myapplication_app_contest.Activity.Solve2Activity"
     android:background="#ffffff">
 
     <RelativeLayout

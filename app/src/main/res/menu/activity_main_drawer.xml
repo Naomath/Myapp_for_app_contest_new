@@ -8,12 +8,14 @@
             android:title="問題を解く" />
         <item
             android:id="@+id/nav_list"
-            android:icon="@drawable/list_icon_gray"
+            android:icon="@drawable/icon_list"
             android:title="単語リスト" />
         <item
             android:id="@+id/nav_registration"
             android:icon="@android:drawable/ic_menu_add"
             android:title="登録" />
+    </group>
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_settings"
             android:icon="@android:drawable/ic_menu_manage"

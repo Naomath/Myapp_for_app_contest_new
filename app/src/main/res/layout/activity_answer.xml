@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lifeistech.naoto.myapplication_app_contest.AnswerActivity"
+    tools:context="com.lifeistech.naoto.myapplication_app_contest.Activity.AnswerActivity"
     android:background="#ffffff">
 
     <RelativeLayout

@@ -1,4 +1,4 @@
-package com.lifeistech.naoto.myapplication_app_contest;
+package com.lifeistech.naoto.myapplication_app_contest.Sugar;
 
 import com.orm.SugarApp;
 import com.orm.SugarContext;
@@ -8,7 +8,6 @@ import com.orm.SugarContext;
  */
 
 public class SugarOrmControl extends SugarApp {
-
     @Override
     public void onCreate(){
         super.onCreate();

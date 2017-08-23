@@ -3,14 +3,14 @@
     package="com.lifeistech.naoto.myapplication_app_contest">
 
     <application
-        android:name=".SugarOrmControl"
+        android:name=".Sugar.SugarOrmControl"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@drawable/icon1"
         android:label="バカ天"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".SplashActivity">
+        <activity android:name=".Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,18 +31,19 @@
             android:name="APP_CONTEST_3"
             android:value="com.lifeistech.naoto.myapplication_app_contest" />
 
-        <activity android:name=".SolveActivity" />
-        <activity android:name=".AnswerActivity" />
-        <activity android:name=".SetUpActivity" />
-        <activity android:name=".ListActivity" />
-        <activity android:name=".ListGroupWordsActivity" />
-        <activity android:name=".SolveWeakActivity" />
-        <activity android:name=".Solve2Activity" />
-        <activity android:name=".ListWeakActivity" />
+        <activity android:name=".Activity.SolveActivity" />
+        <activity android:name=".Activity.AnswerActivity" />
+        <activity android:name=".Activity.SetUpActivity" />
+        <activity android:name=".Activity.ListActivity" />
+        <activity android:name=".Activity.ListGroupWordsActivity" />
+        <activity android:name=".Activity.SolveWeakActivity" />
+        <activity android:name=".Activity.Solve2Activity" />
+        <activity android:name=".Activity.ListWeakActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.SolveGroupActivity"></activity>
     </application>
 
 </manifest>

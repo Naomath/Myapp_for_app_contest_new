@@ -1,4 +1,4 @@
-package com.lifeistech.naoto.myapplication_app_contest;
+package com.lifeistech.naoto.myapplication_app_contest.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
+
+import com.lifeistech.naoto.myapplication_app_contest.Activity.AnswerActivity;
+import com.lifeistech.naoto.myapplication_app_contest.Activity.MainActivity;
+import com.lifeistech.naoto.myapplication_app_contest.R;
 
 import java.util.ArrayList;
 
@@ -17,6 +21,7 @@ public class Solve2Activity extends AppCompatActivity {
     ArrayList<String> ids;
     int number;
     int mode;
+    long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,7 @@ public class Solve2Activity extends AppCompatActivity {
         ids = intent.getStringArrayListExtra("ids");
         number = intent.getIntExtra("number", 0);
         mode = intent.getIntExtra("mode", 0);
+        long id = intent.getLongExtra("id_gruop", 0);
         TextView textView = (TextView) findViewById(R.id.textView);
         SharedPreferences pref = getSharedPreferences("question_mode", MODE_PRIVATE);
         int mode = pref.getInt("question_mode",0);
@@ -57,6 +63,7 @@ public class Solve2Activity extends AppCompatActivity {
         intent.putExtra("japaneses", japaneses);
         intent.putExtra("englishes", englishes);
         intent.putExtra("ids", ids);
+        intent.putExtra("id_group", id);
         intent.putExtra("number", number);
         intent.putExtra("mode", mode);
         startActivity(intent);
