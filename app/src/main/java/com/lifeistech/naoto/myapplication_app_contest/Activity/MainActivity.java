@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.lifeistech.naoto.myapplication_app_contest.R;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
@@ -74,7 +76,43 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.nav_delete) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("消去");
+            builder.setMessage("全件消去しますか？");
+            builder.setNeutralButton("キャンセル", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            builder.setPositiveButton("消去", new DialogInterface.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("消去");
+                    builder.setMessage("全部消去しますか？");
+                    builder.setNeutralButton("キャンセル", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    builder.setPositiveButton("消去", new DialogInterface.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            TwoWords.deleteAll(TwoWords.class);
+                            TwoWordsWeak.deleteAll(TwoWordsWeak.class);
+                            GroupTwoWords.deleteAll(GroupTwoWords.class);
+                        }
+                    });
+                    builder.show();
+                }
+            });
+            builder.show();
         } else if (id == R.id.nav_settings) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
@@ -116,50 +154,18 @@ public class MainActivity extends AppCompatActivity
                 }
             });
             alert.show();
-        } else if (id == R.id.nav_sns) {
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("消去");
-            builder.setMessage("全件消去しますか？");
-            builder.setNeutralButton("キャンセル", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
-            builder.setPositiveButton("消去", new DialogInterface.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setTitle("消去");
-                    builder.setMessage("全部消去しますか？");
-                    builder.setNeutralButton("キャンセル", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    builder.setPositiveButton("消去", new DialogInterface.OnClickListener() {
-                        @RequiresApi(api = Build.VERSION_CODES.N)
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            TwoWords.deleteAll(TwoWords.class);
-                            TwoWordsWeak.deleteAll(TwoWordsWeak.class);
-                            GroupTwoWords.deleteAll(GroupTwoWords.class);
-                        }
-                    });
-                    builder.show();
-                }
-            });
-            builder.show();
+        } else if (id == R.id.nav_download) {
+            //ダウンロード
+            down_load();
         } else if (id == R.id.nav_registration) {
             showDialog_set_up();
         } else if (id == R.id.nav_list) {
             show_dialog_list();
         } else if (id == R.id.nav_solve) {
             showDialog_solve();
+        }else if(id == R.id.nav_upload){
+            //アップロード
+            up_load();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -284,6 +290,20 @@ public class MainActivity extends AppCompatActivity
         });
 
         builder.show();
+    }
+
+    public void down_load(){
+        //ダウンロードの処理
+        Intent intent = new Intent(this,ListActivity.class);
+        intent.putExtra("mode",1);
+        startActivity(intent);
+    }
+
+    public void up_load(){
+        //アップロードの処理
+        Intent intent = new Intent(this, ListActivity.class);
+        intent.putExtra("mode",2);
+        startActivity(intent);
     }
 
 }

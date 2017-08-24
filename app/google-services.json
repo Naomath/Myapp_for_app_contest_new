@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "69633140190",
+    "firebase_url": "https://litbor-5f53b.firebaseio.com",
+    "project_id": "litbor-5f53b",
+    "storage_bucket": "litbor-5f53b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69633140190:android:da2a373989e6380d",
+        "android_client_info": {
+          "package_name": "com.lifeistech.naoto.myapplication_app_contest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "69633140190-at2knj3lco75v0lcpae0j6hltbpnqanu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQhK3nkndBJEc8f0Dej08y-_JBc-0EXVI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
