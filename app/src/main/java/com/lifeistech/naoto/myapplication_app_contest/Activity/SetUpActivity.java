@@ -174,8 +174,6 @@ public class SetUpActivity extends AppCompatActivity {
                     editor.commit();
                     StringBuffer buf2 = new StringBuffer();
                     buf2.append(date);
-                    String string_number_of_day = new Integer(number_of_day).toString();
-                    buf2.append(string_number_of_day);
                     String date2 = buf2.toString();
                     TwoWords two_words = new TwoWords(group_name, japanese_string, english_string, date2);
                     //ここでlistにtwoewordsを入れる

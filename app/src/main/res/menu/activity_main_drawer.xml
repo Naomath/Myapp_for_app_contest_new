@@ -8,7 +8,7 @@
             android:title="問題を解く" />
         <item
             android:id="@+id/nav_list"
-            android:icon="@drawable/icon_list"
+            android:icon="@android:drawable/ic_menu_sort_by_size"
             android:title="単語リスト" />
         <item
             android:id="@+id/nav_registration"

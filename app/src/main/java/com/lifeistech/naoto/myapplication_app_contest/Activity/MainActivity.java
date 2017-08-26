@@ -13,13 +13,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.lifeistech.naoto.myapplication_app_contest.R;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("バカ天");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity
             builder.show();
         }
     }
+
 
     @Override
     public void onBackPressed() {
@@ -163,7 +164,7 @@ public class MainActivity extends AppCompatActivity
             show_dialog_list();
         } else if (id == R.id.nav_solve) {
             showDialog_solve();
-        }else if(id == R.id.nav_upload){
+        } else if (id == R.id.nav_upload) {
             //アップロード
             up_load();
         }
@@ -292,17 +293,17 @@ public class MainActivity extends AppCompatActivity
         builder.show();
     }
 
-    public void down_load(){
+    public void down_load() {
         //ダウンロードの処理
-        Intent intent = new Intent(this,ListActivity.class);
-        intent.putExtra("mode",1);
+        Intent intent = new Intent(this, ListActivity.class);
+        intent.putExtra("mode", 1);
         startActivity(intent);
     }
 
-    public void up_load(){
+    public void up_load() {
         //アップロードの処理
         Intent intent = new Intent(this, ListActivity.class);
-        intent.putExtra("mode",2);
+        intent.putExtra("mode", 2);
         startActivity(intent);
     }
 

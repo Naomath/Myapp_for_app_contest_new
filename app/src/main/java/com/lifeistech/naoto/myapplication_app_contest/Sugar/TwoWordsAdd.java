@@ -3,10 +3,10 @@ package com.lifeistech.naoto.myapplication_app_contest.Sugar;
 import com.orm.SugarRecord;
 
 /**
- * Created by naoto on 2017/06/04.
+ * Created by naoto on 2017/08/26.
  */
 
-public class TwoWords extends SugarRecord {
+public class TwoWordsAdd extends SugarRecord{
     //一単語づつで管理する
     private String title;
     //グループの名前
@@ -23,17 +23,26 @@ public class TwoWords extends SugarRecord {
     private String subTitle;
     //追加登録の時に使う
 
-    public TwoWords() {
+    public TwoWordsAdd() {
         //普通のコンストラクタ
         //使うことはない
     }
 
-    public TwoWords(String title, String words_japanese, String words_english, String date) {
+    public TwoWordsAdd(String title, String words_japanese, String words_english, String date) {
         this.title = title;
         this.words_japanese = words_japanese;
         this.words_english = words_english;
         this.date = date;
         weak = 0;
+    }
+
+    public TwoWordsAdd(String title, String words_japanese, String words_english, String date, String subTitle) {
+        this.title = title;
+        this.words_japanese = words_japanese;
+        this.words_english = words_english;
+        this.date = date;
+        weak = 0;
+        this.subTitle = subTitle;
     }
 
     public String getJapanese() {

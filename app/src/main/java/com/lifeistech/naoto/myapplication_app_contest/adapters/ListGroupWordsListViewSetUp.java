@@ -10,12 +10,13 @@ import android.widget.TextView;
 
 import com.lifeistech.naoto.myapplication_app_contest.R;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWordsSet;
 
 /**
  * Created by naoto on 2017/07/27.
  */
 
-public class ListGroupWordsListViewSetUp extends ArrayAdapter<TwoWords> {
+public class ListGroupWordsListViewSetUp extends ArrayAdapter<TwoWordsSet> {
     Context mContext;
     LayoutInflater mLayoutInflater;
     int mCheck;
@@ -38,7 +39,7 @@ public class ListGroupWordsListViewSetUp extends ArrayAdapter<TwoWords> {
         } else {
             view_set_up = ((ListGroupWordsListViewSetUp.ViewSetUp3) convertView.getTag());
         }
-        TwoWords item = getItem(position);
+        TwoWordsSet item = getItem(position);
         if (item != null) {
             view_set_up.japanese_textview.setText(item.getJapanese());
             view_set_up.english_textview.setText(item.getEnglish());
@@ -53,8 +54,8 @@ public class ListGroupWordsListViewSetUp extends ArrayAdapter<TwoWords> {
         ImageView imageView;
 
         public ViewSetUp3(View view) {
-            japanese_textview = ((TextView) view.findViewById(R.id.textViewLGW1));
-            english_textview = ((TextView) view.findViewById(R.id.textViewLGW2));
+            japanese_textview = ((TextView) view.findViewById(R.id.textViewLGW0));
+            english_textview = ((TextView) view.findViewById(R.id.textViewLGW1));
             imageView = (ImageView) view.findViewById(R.id.imageView6);
         }
     }

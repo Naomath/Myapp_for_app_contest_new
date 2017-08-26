@@ -48,7 +48,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textViewLGW2"
+                    android:id="@+id/textViewLGW0"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginBottom="7dp"

@@ -19,6 +19,7 @@ public class Solve2Activity extends AppCompatActivity {
     ArrayList<String> japaneses;
     ArrayList<String> englishes;
     ArrayList<String> ids;
+    ArrayList<Integer> modes;
     int number;
     int mode;
     long id;
