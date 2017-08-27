@@ -12,7 +12,10 @@
         android:label="バカ天"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".Activity.SplashActivity">
+        <activity
+            android:name=".Activity.SplashActivity"
+            android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,17 +36,34 @@
             android:name="APP_CONTEST_3"
             android:value="com.lifeistech.naoto.myapplication_app_contest" />
 
-        <activity android:name=".Activity.SolveActivity" />
-        <activity android:name=".Activity.AnswerActivity" />
-        <activity android:name=".Activity.SetUpActivity" />
-        <activity android:name=".Activity.ListActivity" />
-        <activity android:name=".Activity.ListGroupWordsActivity" />
-        <activity android:name=".Activity.SolveWeakActivity" />
-        <activity android:name=".Activity.Solve2Activity" />
-        <activity android:name=".Activity.ListWeakActivity" />
+        <activity
+            android:name=".Activity.SolveActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.AnswerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.SetUpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ListGroupWordsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.SolveWeakActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.Solve2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ListWeakActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.MainActivity"
             android:label="@string/title_activity_main"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.SolveGroupActivity"></activity>
     </application>

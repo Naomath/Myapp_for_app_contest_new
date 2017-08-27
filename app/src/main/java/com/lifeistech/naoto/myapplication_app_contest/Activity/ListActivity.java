@@ -2,9 +2,12 @@ package com.lifeistech.naoto.myapplication_app_contest.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,12 +30,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity{
 
     //登録された単語のグループのリストを扱う
     ListView listView;
     ListSetUp adapter;
     int number_size;
+    Boolean isFabOpen = false;
+    FloatingActionButton fab, fab1, fab2, fab3, fab4;
+    Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +57,11 @@ public class ListActivity extends AppCompatActivity {
         int mode = intent.getIntExtra("mode",0);
         if(mode == 1) {
             //ダウンロードの時の処理
+            invisivleFab();
             down_load_time();
         }else if(mode == 2){
             //アップロードの処理
+            invisivleFab();
             up_load_time();
         }else {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -68,9 +76,7 @@ public class ListActivity extends AppCompatActivity {
             });
             //グループの名前の呼び出し
             adpter_groupaTwoWords_all();
-            //TextViewの設定
-            TextView textView = (TextView) findViewById(R.id.textViewL0);
-            textView.setText("All");
+            //fab
         }
     }
 
@@ -79,15 +85,6 @@ public class ListActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("group");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
-         /*   @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //投稿された時
-                GroupTwoWords groupTwoWords = dataSnapshot.getValue(GroupTwoWords.class);
-                groupTwoWordses.add(groupTwoWords);
-                adapter.addAll(groupTwoWordses);
-            }
-            */
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //変更された時
@@ -95,22 +92,7 @@ public class ListActivity extends AppCompatActivity {
                     GenericTypeIndicator<ArrayList<GroupTwoWords>> indicator = new GenericTypeIndicator<ArrayList<GroupTwoWords>>() {};
                     GroupTwoWords groupTwoWords= dataSnapshot.getValue(GroupTwoWords.class);
                     adapter.add(groupTwoWords);
-                   /* for(GroupTwoWords groupTwoWords:groupTwoWordsArrayList){
-                        adapter.add(groupTwoWords);
-                    }
-                    */
             }
-/*
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                //削除された時
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                //移動された時
-            }
-*/
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 //キャンセルされた時
@@ -159,4 +141,11 @@ public class ListActivity extends AppCompatActivity {
     public void make_Toast(String str){
         Toast.makeText(this,str,Toast.LENGTH_SHORT);
     }
+
+    public void invisivleFab(){
+        //fabを非表示にする
+        FloatingActionButton floatingActionButton = (FloatingActionButton)findViewById(R.id.fab);
+        floatingActionButton.setVisibility(View.INVISIBLE);
+    }
+
 }

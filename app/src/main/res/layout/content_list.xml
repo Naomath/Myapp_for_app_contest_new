@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.lifeistech.naoto.myapplication_app_contest.Activity.ListGroupWordsActivity"
-    tools:showIn="@layout/activity_list_group_words">
+    tools:context="com.lifeistech.naoto.myapplication_app_contest.Activity.ListActivity"
+    tools:showIn="@layout/activity_list">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,26 +14,27 @@
         tools:layout_editor_absoluteY="10dp"
         tools:layout_editor_absoluteX="10dp">
 
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:fontFamily="sans-serif-medium"
-            android:text="単語をクリックするとその単語のセッティングを開けます"
+            android:text="リストをクリックするとそのグループの単語がみれます"
             android:textColor="#000000"
             android:textSize="13dp" />
 
         <ListView
-            android:id="@+id/listview_LGW"
+            android:id="@+id/listView2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_weight="8"
+            android:layout_weight="24"
+            android:cacheColorHint="#00000000"
             android:divider="#00000000"
             android:dividerHeight="7dp" />
 
-
     </LinearLayout>
-
 </android.support.constraint.ConstraintLayout>

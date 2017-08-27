@@ -4,12 +4,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -17,11 +21,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lifeistech.naoto.myapplication_app_contest.Class.TwoWordsSet;
 import com.lifeistech.naoto.myapplication_app_contest.R;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWordsAdd;
-import com.lifeistech.naoto.myapplication_app_contest.Class.TwoWordsSet;
 import com.lifeistech.naoto.myapplication_app_contest.adapters.ListGroupWordsListViewSetUp;
 import com.orm.SugarRecord;
 
@@ -29,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class ListGroupWordsActivity extends AppCompatActivity {
+public class ListGroupWordsActivity extends AppCompatActivity implements View.OnClickListener{
 
     EditText editText;
     EditText editText1;
@@ -39,6 +43,9 @@ public class ListGroupWordsActivity extends AppCompatActivity {
     LinearLayout layout;
     ArrayList<TwoWordsSet> listSet;
     long id;
+    Boolean isFabOpen = false;
+    FloatingActionButton fab, fab1, fab3, fab4;
+    Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +58,10 @@ public class ListGroupWordsActivity extends AppCompatActivity {
         //受け渡し終了
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         setTitle(groupTwoWords.getGROUP_NAME());
+        //toolbar
         final ListView listView = (ListView) findViewById(R.id.listview_LGW);
         final ListGroupWordsListViewSetUp adapter = new ListGroupWordsListViewSetUp(this, R.layout.list_group_words_set_up);
         listView.setAdapter(adapter);
@@ -72,7 +82,7 @@ public class ListGroupWordsActivity extends AppCompatActivity {
                 layout.addView(editText1);
                 TwoWordsSet twoWordsSet = (TwoWordsSet) adapter.getItem(i);
                 int mode = twoWordsSet.getMode();
-                switch (mode){
+                switch (mode) {
                     case 0:
                         TwoWords twoWords = SugarRecord.findById(TwoWords.class, twoWordsSet.getId());
                         editText.setText(twoWords.getJapanese());
@@ -100,44 +110,59 @@ public class ListGroupWordsActivity extends AppCompatActivity {
             listSet.add(twoWordsSet);
             adapter.add(twoWordsSet);
         }
-       List<TwoWordsAdd> list = TwoWordsAdd.listAll(TwoWordsAdd.class);
-        for(TwoWordsAdd twoWordsAdd:list){
-            if(twoWordsAdd.getSubTitle().equals(group_name)){
+        List<TwoWordsAdd> list = TwoWordsAdd.listAll(TwoWordsAdd.class);
+        for (TwoWordsAdd twoWordsAdd : list) {
+            if (twoWordsAdd.getSubTitle().equals(group_name)) {
                 TwoWordsSet twoWordsSet = new TwoWordsSet(twoWordsAdd.getId(), twoWordsAdd.getJapanese(), twoWordsAdd.getEnglish(), 1);
                 listSet.add(twoWordsSet);
                 adapter.add(twoWordsSet);
             }
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_listgroupwords, menu);
-        return true;
+        createFab();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.group_delete:
-                //消去
+        int id = item.getItemId();
+
+        boolean result = true;
+
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                result = super.onOptionsItemSelected(item);
+        }
+
+        return result;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id){
+            case R.id.fab:
+                animateFAB();
+                break;
+            case R.id.fab1:
+                //delete
                 groupDelete();
                 break;
-            case R.id.group_solve:
-                //解く
-                groupSolve();
-                break;
-            case R.id.group_add:
-                //追加
+            case R.id.fab3:
+                //add
                 groupAdd();
                 break;
+            case R.id.fab4:
+                //solve
+                groupSolve();
+                break;
         }
-        return true;
     }
 
     public void groupSolve() {
         Intent intent = new Intent(this, SolveGroupActivity.class);
-        intent.putExtra("id_group",id);
+        intent.putExtra("id_group", id);
         startActivity(intent);
     }
 
@@ -216,7 +241,7 @@ public class ListGroupWordsActivity extends AppCompatActivity {
                         editor.commit();
                         TwoWordsAdd twoWords1 = new TwoWordsAdd("add", editText.getText().toString(), editText1.getText().toString(), date);
                         twoWords1.save();
-                        TwoWords twoWords2 = new TwoWords("追加されたものたち",editText.getText().toString(), editText1.getText().toString(), date);
+                        TwoWords twoWords2 = new TwoWords("追加されたものたち", editText.getText().toString(), editText1.getText().toString(), date);
                         twoWords2.save();
                         makeToast("追加しました");
                     }
@@ -249,7 +274,7 @@ public class ListGroupWordsActivity extends AppCompatActivity {
                             twoWords.setJapanese(null);
                             twoWords.setEnglish(null);
                             twoWords.save();
-                        }else {
+                        } else {
                             twoWordsAdd.delete();
                         }
                         Toast.makeText(ListGroupWordsActivity.this, "消去しました", Toast.LENGTH_SHORT).show();
@@ -271,7 +296,7 @@ public class ListGroupWordsActivity extends AppCompatActivity {
                     twoWords.setJapanese(editText.getText().toString());
                     twoWords.setEnglish(editText1.getText().toString());
                     twoWords.save();
-                }else {
+                } else {
                     twoWordsAdd.setJapanese(editText.getText().toString());
                     twoWordsAdd.setEnglish(editText1.getText().toString());
                     twoWordsAdd.save();
@@ -284,6 +309,46 @@ public class ListGroupWordsActivity extends AppCompatActivity {
 
     public void makeToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void createFab() {
+        fab = (FloatingActionButton)findViewById(R.id.fab);
+        fab1 = (FloatingActionButton)findViewById(R.id.fab1);
+       //fab2は消した
+        fab3 = (FloatingActionButton)findViewById(R.id.fab3);
+        fab4 = (FloatingActionButton)findViewById(R.id.fab4);
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
+        fab.setOnClickListener(this);
+        fab1.setOnClickListener(this);
+        fab3.setOnClickListener(this);
+        fab4.setOnClickListener(this);
+    }
+
+
+    public void animateFAB(){
+
+        if(isFabOpen){
+
+            fab.startAnimation(rotate_backward);
+            fab1.startAnimation(fab_close);
+            fab3.startAnimation(fab_close);
+            fab4.startAnimation(fab_close);
+            fab1.setClickable(false);
+            isFabOpen = false;
+
+        } else {
+
+            fab.startAnimation(rotate_forward);
+            fab1.startAnimation(fab_open);
+            fab3.startAnimation(fab_open);
+            fab4.startAnimation(fab_open);
+            fab1.setClickable(true);
+            isFabOpen = true;
+
+        }
     }
 
 }

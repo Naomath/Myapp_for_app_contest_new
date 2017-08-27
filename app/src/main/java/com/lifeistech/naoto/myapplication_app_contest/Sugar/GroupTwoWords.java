@@ -1,8 +1,10 @@
 package com.lifeistech.naoto.myapplication_app_contest.Sugar;
 
+import com.google.firebase.database.Exclude;
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by naoto on 2017/07/23.
@@ -17,10 +19,6 @@ public class GroupTwoWords extends SugarRecord {
     //最初のid
     private ArrayList<TwoWords> arrayList;
     //firebase専用
-   // private int ADD;
-    //単語が追加されたかどうか
-    //0だったら追加されてない
-    //デフォルトは0
 
     public GroupTwoWords() {
     }
@@ -48,15 +46,7 @@ public class GroupTwoWords extends SugarRecord {
         return arrayList;
     }
 
-   // public int getADD() {
-   //     return ADD;
-  //  }
-
     public void setArrayList(ArrayList<TwoWords> arrayList) {
         this.arrayList = arrayList;
     }
-
-  //  public void setADD(int ADD) {
-   //     this.ADD = ADD;
-   // }
 }

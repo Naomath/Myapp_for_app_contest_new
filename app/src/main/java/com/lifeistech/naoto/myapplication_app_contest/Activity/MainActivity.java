@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,27 +14,39 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.lifeistech.naoto.myapplication_app_contest.R;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWordsWeak;
+import com.lifeistech.naoto.myapplication_app_contest.adapters.ListSetUp;
+import com.orm.SugarRecord;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     int mCheckedItem;
+    ListView listView;
+    ListSetUp adapter;
+    int number_size;
+    Boolean isFabOpen = false;
+    FloatingActionButton fab, fab1, fab3;
+    Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("バカ天");
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_list);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -57,8 +70,27 @@ public class MainActivity extends AppCompatActivity
             });
             builder.show();
         }
+        //リストビューの設定
+        listView = (ListView) findViewById(R.id.listView2);
+        adapter = new ListSetUp(this, R.layout.list_set_up);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                GroupTwoWords groupTwoWords = (GroupTwoWords) adapter.getItem(i);
+                long id = groupTwoWords.getId();
+                Intent intent = new Intent(MainActivity.this, ListGroupWordsActivity.class);
+                intent.putExtra("ID_GROUP_TWOWORDS", id);
+                startActivity(intent);
+            }
+        });
+        List<GroupTwoWords> list = SugarRecord.listAll(GroupTwoWords.class);
+        number_size = list.size();
+        for (GroupTwoWords groupTwoWords : list) {
+            adapter.add(groupTwoWords);
+        }
+        createFab();
     }
-
 
     @Override
     public void onBackPressed() {
@@ -69,7 +101,6 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -160,8 +191,6 @@ public class MainActivity extends AppCompatActivity
             down_load();
         } else if (id == R.id.nav_registration) {
             showDialog_set_up();
-        } else if (id == R.id.nav_list) {
-            show_dialog_list();
         } else if (id == R.id.nav_solve) {
             showDialog_solve();
         } else if (id == R.id.nav_upload) {
@@ -176,20 +205,6 @@ public class MainActivity extends AppCompatActivity
     public void make_Toast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
-    }
-
-    public void solve(View view) {
-        //今日の問題を解く処理
-        showDialog_solve();
-    }
-
-    public void set_up(View view) {
-        // 問題を登録する処理
-        showDialog_set_up();
-    }
-
-    public void list(View view) {
-        show_dialog_list();
     }
 
     public void showDialog_solve() {
@@ -305,6 +320,50 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, ListActivity.class);
         intent.putExtra("mode", 2);
         startActivity(intent);
+    }
+
+    public void createFab() {
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab1 = (FloatingActionButton)findViewById(R.id.fab1);
+        fab3 = (FloatingActionButton) findViewById(R.id.fab3);
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
+    }
+
+
+    public void animateFAB() {
+
+        if (isFabOpen) {
+
+            fab.startAnimation(rotate_backward);
+            fab1.startAnimation(fab_close);
+            fab3.startAnimation(fab_close);
+            fab1.setClickable(false);
+            isFabOpen = false;
+
+        } else {
+
+            fab.startAnimation(rotate_forward);
+            fab1.startAnimation(fab_open);
+            fab3.startAnimation(fab_open);
+            fab1.setClickable(true);
+            isFabOpen = true;
+
+        }
+    }
+
+    public void fab(View view) {
+        animateFAB();
+    }
+
+    public void fab1(View view) {
+        showDialog_set_up();
+    }
+
+    public void fab2(View view) {
+        showDialog_solve();
     }
 
 }
