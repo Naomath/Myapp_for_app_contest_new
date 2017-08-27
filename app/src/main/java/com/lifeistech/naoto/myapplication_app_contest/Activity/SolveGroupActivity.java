@@ -8,7 +8,7 @@ import com.lifeistech.naoto.myapplication_app_contest.R;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWordsAdd;
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWordsSet;
+import com.lifeistech.naoto.myapplication_app_contest.Class.TwoWordsSet;
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;

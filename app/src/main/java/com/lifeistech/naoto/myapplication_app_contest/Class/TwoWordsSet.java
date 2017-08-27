@@ -1,4 +1,4 @@
-package com.lifeistech.naoto.myapplication_app_contest.Sugar;
+package com.lifeistech.naoto.myapplication_app_contest.Class;
 
 /**
  * Created by naoto on 2017/08/26.

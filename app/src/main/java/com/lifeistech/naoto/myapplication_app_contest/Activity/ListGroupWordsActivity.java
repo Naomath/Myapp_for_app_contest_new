@@ -21,13 +21,12 @@ import com.lifeistech.naoto.myapplication_app_contest.R;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWordsAdd;
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWordsSet;
+import com.lifeistech.naoto.myapplication_app_contest.Class.TwoWordsSet;
 import com.lifeistech.naoto.myapplication_app_contest.adapters.ListGroupWordsListViewSetUp;
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 public class ListGroupWordsActivity extends AppCompatActivity {

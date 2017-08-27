@@ -3,6 +3,7 @@ package com.lifeistech.naoto.myapplication_app_contest.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -14,6 +15,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.adapters.ListSetUp;
 import com.lifeistech.naoto.myapplication_app_contest.R;
@@ -21,6 +24,7 @@ import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
@@ -34,6 +38,10 @@ public class ListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        //toolbarの設定
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_list);
+        setSupportActionBar(toolbar);
+        setTitle("バカ天");
         //ListViewの設定
         listView = (ListView) findViewById(R.id.listView2);
         adapter = new ListSetUp(this, R.layout.list_set_up);
@@ -68,23 +76,31 @@ public class ListActivity extends AppCompatActivity {
 
     public void down_load_time(){
         //ダウンロードの時の処理
-        final ArrayList<GroupTwoWords> groupTwoWordses = new ArrayList<>();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("group");
-        reference.addChildEventListener(new ChildEventListener() {
-            @Override
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+         /*   @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //投稿された時
                 GroupTwoWords groupTwoWords = dataSnapshot.getValue(GroupTwoWords.class);
                 groupTwoWordses.add(groupTwoWords);
                 adapter.addAll(groupTwoWordses);
             }
+            */
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 //変更された時
-            }
 
+                    GenericTypeIndicator<ArrayList<GroupTwoWords>> indicator = new GenericTypeIndicator<ArrayList<GroupTwoWords>>() {};
+                    GroupTwoWords groupTwoWords= dataSnapshot.getValue(GroupTwoWords.class);
+                    adapter.add(groupTwoWords);
+                   /* for(GroupTwoWords groupTwoWords:groupTwoWordsArrayList){
+                        adapter.add(groupTwoWords);
+                    }
+                    */
+            }
+/*
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 //削除された時
@@ -94,7 +110,7 @@ public class ListActivity extends AppCompatActivity {
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
                 //移動された時
             }
-
+*/
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 //キャンセルされた時
