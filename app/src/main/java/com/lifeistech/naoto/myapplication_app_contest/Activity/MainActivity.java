@@ -20,7 +20,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lifeistech.naoto.myapplication_app_contest.R;
@@ -30,16 +32,17 @@ import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWordsWeak;
 import com.lifeistech.naoto.myapplication_app_contest.adapters.ListSetUp;
 import com.orm.SugarRecord;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     int mCheckedItem;
-    ListView listView;
-    ListSetUp adapter;
     int number_size;
     Boolean isFabOpen = false;
     FloatingActionButton fab, fab1, fab3;
     Animation fab_open, fab_close, rotate_forward, rotate_backward;
+    TextView textView, textView1;
+    LinearLayout linearLayout, linearLayout1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +73,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             });
             builder.show();
         }
-        //リストビューの設定
-        listView = (ListView) findViewById(R.id.listView2);
-        adapter = new ListSetUp(this, R.layout.list_set_up);
+        //リストビューの設定(自分で作成したもの)
+        ListView listView = (ListView) findViewById(R.id.listView2);
+        final ListSetUp adapter = new ListSetUp(this, R.layout.list_set_up);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -90,6 +93,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             adapter.add(groupTwoWords);
         }
         createFab();
+        SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
+        int which = preferences.getInt("which", 0);
+        if (which == 0) {
+            //初めての場合
+            showDialogUser(preferences);
+        } else {
+            View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
+            TextView textView = (TextView) header.findViewById(R.id.textView4);
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("User:");
+            String user = preferences.getString("user", null);
+            buffer.append(user);
+            textView.setText(buffer.toString());
+        }
+        //listview(間違えやすいもの)
+        ListView listView1 = (ListView) findViewById(R.id.listViewWeak);
+        ListSetUp adapterWeak = new ListSetUp(this, R.layout.list_set_up);
+        listView1.setAdapter(adapterWeak);
+        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent1 = new Intent(MainActivity.this, ListWeakActivity.class);
+                startActivity(intent1);
+            }
+        });
+        SharedPreferences preferences1 = getSharedPreferences("weak_id", 0);
+        long id = preferences1.getLong("weak_id", 0);
+        GroupTwoWords groupTwoWords = GroupTwoWords.findById(GroupTwoWords.class, id);
+        adapterWeak.add(groupTwoWords);
+        //listview(download)
+
     }
 
     @Override
@@ -274,38 +308,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.show();
     }
 
-    public void show_dialog_list() {
-        //リストについて処理
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("単語リスト");
-        builder.setMessage("どのリストを見ますか？");
-        builder.setNegativeButton("間違えやすい", new DialogInterface.OnClickListener() {
+    public void showDialogUser(final SharedPreferences preferences) {
+        final EditText editText = new EditText(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("バカ天にようこそ");
+        builder.setMessage("ユーザー名を入力してください");
+        builder.setView(editText);
+        builder.setPositiveButton("決定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //間違えやすいの
-                Intent intent = new Intent(MainActivity.this, ListWeakActivity.class);
-                startActivity(intent);
-
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putInt("which", 1);
+                editor.putString("user", editText.getText().toString());
+                editor.commit();
+                TextView textView = (TextView) findViewById(R.id.textView4);
+                textView.setText(editText.getText().toString());
             }
         });
-        builder.setPositiveButton("全部", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //普通の
-                Intent intent = new Intent(MainActivity.this, ListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        builder.setNeutralButton("キャンセル", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //キャンセルする時の処理
-                dialogInterface.dismiss();
-            }
-        });
-
-        builder.show();
+        builder.setCancelable(false).show();
+        //後weakの設定
+        GroupTwoWords groupTwoWords = new GroupTwoWords();
+        groupTwoWords.setGROUP_NAME("間違えやすい");
+        groupTwoWords.setCalendar(Calendar.getInstance());
+        groupTwoWords.save();
+        SharedPreferences preferences1 = getSharedPreferences("weak_id", 0);
+        SharedPreferences.Editor editor = preferences1.edit();
+        editor.putLong("weak_id", groupTwoWords.getId());
+        editor.commit();
     }
 
     public void down_load() {
@@ -324,7 +353,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void createFab() {
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab1 = (FloatingActionButton)findViewById(R.id.fab1);
+        fab1 = (FloatingActionButton) findViewById(R.id.fab1);
+        linearLayout = (LinearLayout) findViewById(R.id.line1);
+        linearLayout1 = (LinearLayout) findViewById(R.id.line2);
+        textView1 = (TextView) findViewById(R.id.text2);
+        textView = (TextView) findViewById(R.id.text);
         fab3 = (FloatingActionButton) findViewById(R.id.fab3);
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
@@ -336,9 +369,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void animateFAB() {
 
         if (isFabOpen) {
-
             fab.startAnimation(rotate_backward);
             fab1.startAnimation(fab_close);
+            textView1.startAnimation(fab_close);
+            textView.startAnimation(fab_close);
+            linearLayout.startAnimation(fab_close);
+            linearLayout1.startAnimation(fab_close);
             fab3.startAnimation(fab_close);
             fab1.setClickable(false);
             isFabOpen = false;
@@ -347,6 +383,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             fab.startAnimation(rotate_forward);
             fab1.startAnimation(fab_open);
+            linearLayout.startAnimation(fab_open);
+            textView.startAnimation(fab_open);
+            linearLayout1.startAnimation(fab_open);
+            textView1.startAnimation(fab_open);
             fab3.startAnimation(fab_open);
             fab1.setClickable(true);
             isFabOpen = true;

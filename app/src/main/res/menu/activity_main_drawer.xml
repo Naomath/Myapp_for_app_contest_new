@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_0"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_solve"
             android:icon="@android:drawable/ic_menu_edit"
@@ -11,7 +13,9 @@
             android:icon="@drawable/plus_white"
             android:title="登録" />
     </group>
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_1"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_settings"
             android:icon="@android:drawable/ic_menu_manage"
@@ -27,7 +31,7 @@
         <item
             android:id="@+id/nav_upload"
             android:icon="@android:drawable/stat_sys_upload"
-            android:title="グループをアップロード"/>
+            android:title="グループをアップロード" />
 
     </group>
 

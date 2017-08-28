@@ -8,7 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="2dp"
-        android:layout_marginLeft="3dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginRight="7dp"
         android:layout_marginTop="3dp"
         android:background="@drawable/linearlayout_shadow">
 
@@ -33,24 +34,55 @@
                     app:srcCompat="@drawable/bitmap" />
             </RelativeLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="9">
+                android:layout_weight="9"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/group_name_textview"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="left|center"
-                    android:textSize="35dp" />
-            </RelativeLayout>
-        </LinearLayout>
+                    android:layout_height="0dp"
+                    android:layout_weight="5">
 
+                    <TextView
+                        android:id="@+id/group_name_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="left|center"
+                        android:textSize="35dp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginBottom="7dp"
+                        android:layout_weight="1"
+                        android:id="@+id/textViewchange"
+                        android:gravity="bottom|right"
+                        android:text="最終変更日"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/group_time"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginBottom="7dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="2"
+                        android:gravity="bottom|right"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

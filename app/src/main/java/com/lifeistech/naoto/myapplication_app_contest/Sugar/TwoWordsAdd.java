@@ -21,28 +21,33 @@ public class TwoWordsAdd extends SugarRecord{
     //間違えてない問題は0
     //間違えてる問題は1
     private String subTitle;
+
+    public long getTwo_words_id() {
+        return two_words_id;
+    }
+
+    public void setTwo_words_id(long two_words_id) {
+        this.two_words_id = two_words_id;
+    }
+
     //追加登録の時に使う
+    private long two_words_id;
+    //TwoWordsのほうのid
+    //消去に使う
 
     public TwoWordsAdd() {
         //普通のコンストラクタ
         //使うことはない
     }
 
-    public TwoWordsAdd(String title, String words_japanese, String words_english, String date) {
-        this.title = title;
-        this.words_japanese = words_japanese;
-        this.words_english = words_english;
-        this.date = date;
-        weak = 0;
-    }
-
-    public TwoWordsAdd(String title, String words_japanese, String words_english, String date, String subTitle) {
+    public TwoWordsAdd(String title, String words_japanese, String words_english, String date, String subTitle, long two_words_id) {
         this.title = title;
         this.words_japanese = words_japanese;
         this.words_english = words_english;
         this.date = date;
         weak = 0;
         this.subTitle = subTitle;
+        this.two_words_id = two_words_id;
     }
 
     public String getJapanese() {

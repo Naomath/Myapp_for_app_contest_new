@@ -9,11 +9,25 @@
     tools:showIn="@layout/activity_list_group_words">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="344dp"
+        android:layout_height="551dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteY="10dp"
-        tools:layout_editor_absoluteX="10dp">
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.NoActionBar.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar2"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#ffeb3b"
+                app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" />
+
+        </android.support.design.widget.AppBarLayout>
 
         <TextView
             android:layout_width="match_parent"

@@ -95,8 +95,5 @@ public class ListWeakActivity extends AppCompatActivity {
             adapter.add(twoWordsWeak);
             number++;
         }
-        //TextViewの設定
-        TextView textView = (TextView)findViewById(R.id.textViewLW0);
-        textView.setText("Weak List");
     }
 }

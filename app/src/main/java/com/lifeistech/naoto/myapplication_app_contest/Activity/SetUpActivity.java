@@ -184,7 +184,10 @@ public class SetUpActivity extends AppCompatActivity {
                 int size = list.size();
                 TwoWords twoWords = list.get(0);
                 long first_id = twoWords.getId();
-                GroupTwoWords groupTwoWords = new GroupTwoWords(group_name, size, first_id);
+                Calendar calendar = Calendar.getInstance();
+                SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
+                String maker = preferences.getString("user",null);
+                GroupTwoWords groupTwoWords = new GroupTwoWords(group_name, size, first_id, calendar, maker);
                 groupTwoWords.save();
                 //ここでグループとしても登録する
                 Intent intent = new Intent(SetUpActivity.this, MainActivity.class);

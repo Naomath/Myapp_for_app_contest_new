@@ -58,9 +58,13 @@ public class SolveActivity extends AppCompatActivity {
         }else {
             Collections.shuffle(twoWordses);
             for(TwoWords twoWords:twoWordses){
-                japaneses.add(twoWords.getJapanese());
-                englishes.add(twoWords.getEnglish());
-                ids.add(String.valueOf(twoWords.getId()));
+                if(japaneses == null){
+                    break;
+                }else {
+                    japaneses.add(twoWords.getJapanese());
+                    englishes.add(twoWords.getEnglish());
+                    ids.add(String.valueOf(twoWords.getId()));
+                }
             }
             //プリファレンスの設定
             Intent intent = new Intent(SolveActivity.this, Solve2Activity.class);
