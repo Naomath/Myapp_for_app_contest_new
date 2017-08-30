@@ -42,17 +42,7 @@ public class ListSetUp extends ArrayAdapter<GroupTwoWords> {
         GroupTwoWords item = getItem(position);
         if(item != null){
             view_set_up2.GROUP_NAME.setText(item.getGROUP_NAME());
-            Calendar calendar = item.getCalendar();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            StringBuffer buf = new StringBuffer();
-            buf.append(String.valueOf(year));
-            buf.append("-");
-            buf.append(String.valueOf(month+1));
-            buf.append("/");
-            buf.append(String.valueOf(day));
-            view_set_up2.GROUP_TIME.setText(buf.toString());
+            view_set_up2.GROUP_TIME.setText(item.getCalendar());
         }
         return convertView;
     }

@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -26,6 +28,13 @@ public class ListWeakActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_weak);
+        //toolbarの設定
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar_weak);
+        setSupportActionBar(toolbar);
+        setTitle("間違えやすい");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        //listview
         ListView listView = (ListView) findViewById(R.id.listView_LW);
         final ListWeakAdapter adapter = new ListWeakAdapter(this, R.layout.list_set_up_weak_adapter);
         listView.setAdapter(adapter);
@@ -95,5 +104,19 @@ public class ListWeakActivity extends AppCompatActivity {
             adapter.add(twoWordsWeak);
             number++;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        boolean result = true;
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                result = super.onOptionsItemSelected(item);
+        }
+        return result;
     }
 }

@@ -69,7 +69,8 @@ public class AnswerActivity extends AppCompatActivity {
         //わからなかった時の処理
         //TwowordsWeakの登録
         if (mode == 0) {
-            long id = Long.parseLong(ids.get(number));
+            String str = ids.get(number);
+            long id = Long.parseLong(str);
             TwoWords twoWords = SugarRecord.findById(TwoWords.class, id);
             if (twoWords.getWeak() == 1) {
                 //もうすでに間違えている場合の処理

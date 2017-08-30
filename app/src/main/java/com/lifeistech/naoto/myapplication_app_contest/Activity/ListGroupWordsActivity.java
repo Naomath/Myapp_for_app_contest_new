@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class ListGroupWordsActivity extends AppCompatActivity implements View.OnClickListener {
+public class ListGroupWordsActivity extends AppCompatActivity {
     ListGroupWordsListViewSetUp adapter;
     EditText editText;
     EditText editText1;
@@ -41,10 +42,10 @@ public class ListGroupWordsActivity extends AppCompatActivity implements View.On
     ArrayList<TwoWordsSet> listSet;
     long id;
     Boolean isFabOpen = false;
-    FloatingActionButton fab, fab1, fab3, fab2;
+    FloatingActionButton fab, fab1, fab3, fab2, fab4;
     Animation fab_open, fab_close, rotate_forward, rotate_backward;
-    TextView textView, textView1, textView2;
-    LinearLayout linearLayout, linearLayout1, linearLayout2;
+    TextView textView, textView1, textView2, textView3;
+    LinearLayout linearLayout, linearLayout1, linearLayout2, linearLayout3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +89,11 @@ public class ListGroupWordsActivity extends AppCompatActivity implements View.On
         long first_id = groupTwoWords.getFIRST_ID();
         for (int i = 0; i < size; i++) {
             TwoWords twoWords = TwoWords.findById(TwoWords.class, first_id + i);
-            if (twoWords.getJapanese() == null) {
-                break;
+            if (twoWords.getJapanese() != null) {
+                TwoWordsSet twoWordsSet = new TwoWordsSet(twoWords.getId(), twoWords.getJapanese(), twoWords.getEnglish(), 0);
+                listSet.add(twoWordsSet);
+                adapter.add(twoWordsSet);
             }
-            TwoWordsSet twoWordsSet = new TwoWordsSet(twoWords.getId(), twoWords.getJapanese(), twoWords.getEnglish(), 0);
-            listSet.add(twoWordsSet);
-            adapter.add(twoWordsSet);
         }
         List<TwoWordsAdd> list = TwoWordsAdd.listAll(TwoWordsAdd.class);
         for (TwoWordsAdd twoWordsAdd : list) {
@@ -123,26 +123,20 @@ public class ListGroupWordsActivity extends AppCompatActivity implements View.On
         return result;
     }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        switch (id) {
-            case R.id.fab:
-                animateFAB();
-                break;
-            case R.id.fab2:
-                //delete
-                groupDelete();
-                break;
-            case R.id.fab1:
-                //add
-                groupAdd();
-                break;
-            case R.id.fab3:
-                //solve
-                groupSolve();
-                break;
-        }
+    public void fab_open(View view) {
+        animateFAB();
+    }
+
+    public void fab_edit(View view) {
+        groupSolve();
+    }
+
+    public void fab_add(View view) {
+        groupAdd();
+    }
+
+    public void fab_delete(View view) {
+        groupDelete();
     }
 
     public void groupSolve() {
@@ -355,57 +349,75 @@ public class ListGroupWordsActivity extends AppCompatActivity implements View.On
     }
 
     public void changeCalender() {
-        Calendar calendar = Calendar.getInstance();
-        groupTwoWords.setCalendar(calendar);
+        Calendar calendar1 = Calendar.getInstance();
+        int year = calendar1.get(Calendar.YEAR);
+        int month = calendar1.get(Calendar.MONTH);
+        int day_str = calendar1.get(Calendar.DAY_OF_MONTH);
+        StringBuffer buf3 = new StringBuffer();
+        buf3.append(String.valueOf(year));
+        buf3.append("-");
+        buf3.append(String.valueOf(month + 1));
+        buf3.append("/");
+        buf3.append(String.valueOf(day_str));
+        groupTwoWords.setCalendar(buf3.toString());
     }
 
     public void createFab() {
-        fab3 = (FloatingActionButton) findViewById(R.id.fab2);
-        fab1 = (FloatingActionButton) findViewById(R.id.fab1);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab2 = (FloatingActionButton) findViewById(R.id.fab31);
+        fab3 = (FloatingActionButton) findViewById(R.id.fab21);
+        fab1 = (FloatingActionButton) findViewById(R.id.fab11);
+        fab4 = (FloatingActionButton)findViewById(R.id.fab41);
         linearLayout = (LinearLayout) findViewById(R.id.line1);
         linearLayout1 = (LinearLayout) findViewById(R.id.line2);
         linearLayout2 = (LinearLayout) findViewById(R.id.line3);
+        linearLayout3 = (LinearLayout)findViewById(R.id.line4);
         textView1 = (TextView) findViewById(R.id.text1);
         textView = (TextView) findViewById(R.id.text);
         textView2 = (TextView) findViewById(R.id.text0);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab2 = (FloatingActionButton) findViewById(R.id.fab3);
-        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
+        textView3 = (TextView)findViewById(R.id.text4);
+        fab_open = AnimationUtils.loadAnimation(this, R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(this, R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(this, R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(this, R.anim.rotate_backward);
     }
 
 
     public void animateFAB() {
-
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.fab_back_lg);
         if (isFabOpen) {
             fab.startAnimation(rotate_backward);
             fab1.startAnimation(fab_close);
             fab2.startAnimation(fab_close);
+            fab3.startAnimation(fab_close);
+            fab4.startAnimation(fab_close);
             textView1.startAnimation(fab_close);
             textView.startAnimation(fab_close);
             textView2.startAnimation(fab_close);
+            textView3.startAnimation(fab_close);
             linearLayout.startAnimation(fab_close);
             linearLayout2.startAnimation(fab_close);
             linearLayout1.startAnimation(fab_close);
-            fab3.startAnimation(fab_close);
-            fab1.setClickable(false);
+            linearLayout3.startAnimation(fab_close);
             isFabOpen = false;
+            relativeLayout.setVisibility(View.INVISIBLE);
 
         } else {
             fab.startAnimation(rotate_forward);
             fab1.startAnimation(fab_open);
-            linearLayout.startAnimation(fab_open);
-            textView.startAnimation(fab_open);
-            textView2.startAnimation(fab_open);
-            linearLayout2.startAnimation(fab_open);
-            linearLayout1.startAnimation(fab_open);
-            textView1.startAnimation(fab_open);
             fab3.startAnimation(fab_open);
             fab2.startAnimation(fab_open);
-            fab1.setClickable(true);
+            fab4.startAnimation(fab_open);
+            linearLayout.startAnimation(fab_open);
+            textView.startAnimation(fab_open);
+            textView1.startAnimation(fab_open);
+            textView2.startAnimation(fab_open);
+            textView3.startAnimation(fab_close);
+            linearLayout2.startAnimation(fab_open);
+            linearLayout3.startAnimation(fab_open);
+            linearLayout1.startAnimation(fab_open);
             isFabOpen = true;
+            relativeLayout.setVisibility(View.VISIBLE);
         }
     }
 

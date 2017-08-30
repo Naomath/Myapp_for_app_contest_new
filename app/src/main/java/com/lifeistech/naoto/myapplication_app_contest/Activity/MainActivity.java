@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,10 +30,10 @@ import com.lifeistech.naoto.myapplication_app_contest.R;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWordsWeak;
+import com.lifeistech.naoto.myapplication_app_contest.adapters.ListDownLoadAdapter;
 import com.lifeistech.naoto.myapplication_app_contest.adapters.ListSetUp;
 import com.orm.SugarRecord;
 
-import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -73,6 +74,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             });
             builder.show();
         }
+        int upload_end = intent.getIntExtra("upload", 0);
+        if (upload_end == 1) {
+            make_Toast("アップロードしました");
+        }
+        int download = intent.getIntExtra("download_end",0);
+        if(download == 1){
+            make_Toast("ダウンロードが終わりました");
+        }
         //リストビューの設定(自分で作成したもの)
         ListView listView = (ListView) findViewById(R.id.listView2);
         final ListSetUp adapter = new ListSetUp(this, R.layout.list_set_up);
@@ -89,8 +98,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
         List<GroupTwoWords> list = SugarRecord.listAll(GroupTwoWords.class);
         number_size = list.size();
+        SharedPreferences preferences1 = getSharedPreferences("weak_id", 0);
+        long weak_id = preferences1.getLong("weak_id", 0);
         for (GroupTwoWords groupTwoWords : list) {
-            adapter.add(groupTwoWords);
+            if (groupTwoWords.getGROUP_NAME().equals("間違えた")) {
+            }else {
+                if(groupTwoWords.getDown()==0){
+                    adapter.add(groupTwoWords);
+                }
+            }
+
         }
         createFab();
         SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
@@ -118,12 +135,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent1);
             }
         });
-        SharedPreferences preferences1 = getSharedPreferences("weak_id", 0);
-        long id = preferences1.getLong("weak_id", 0);
+        SharedPreferences preferences5 = getSharedPreferences("weak_id", 0);
+        long id = preferences5.getLong("weak_id", 0);
         GroupTwoWords groupTwoWords = GroupTwoWords.findById(GroupTwoWords.class, id);
         adapterWeak.add(groupTwoWords);
         //listview(download)
-
+        ListView listDown = (ListView) findViewById(R.id.listDown);
+        ListDownLoadAdapter listDownLoadAdapter = new ListDownLoadAdapter(this, R.layout.list_down_load_set_up);
+        listDown.setAdapter(listDownLoadAdapter);
+        listDown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                GroupTwoWords groupTwoWords1 = (GroupTwoWords) adapter.getItem(i);
+                long id = groupTwoWords1.getId();
+                Intent intent = new Intent(MainActivity.this, ListGroupWordsActivity.class);
+                intent.putExtra("ID_GROUP_TWOWORDS", id);
+                startActivity(intent);
+            }
+        });
+        for(GroupTwoWords groupTwoWords1:list){
+            if(groupTwoWords.getDown() == 1){
+                adapter.add(groupTwoWords1);
+            }
+        }
     }
 
     @Override
@@ -260,8 +294,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //間違えやすい問題を解く時の処理
-                Intent intent = new Intent(MainActivity.this, SolveWeakActivity.class);
-                startActivity(intent);
+                List<TwoWordsWeak> list = SugarRecord.listAll(TwoWordsWeak.class);
+                if (list.size() == 0) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("終了");
+                    builder.setMessage("出す問題がありません");
+                    builder.setPositiveButton("終了", new DialogInterface.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    builder.show();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, SolveWeakActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -328,8 +377,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.setCancelable(false).show();
         //後weakの設定
         GroupTwoWords groupTwoWords = new GroupTwoWords();
-        groupTwoWords.setGROUP_NAME("間違えやすい");
-        groupTwoWords.setCalendar(Calendar.getInstance());
+        groupTwoWords.setGROUP_NAME("間違えた");
         groupTwoWords.save();
         SharedPreferences preferences1 = getSharedPreferences("weak_id", 0);
         SharedPreferences.Editor editor = preferences1.edit();
@@ -367,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public void animateFAB() {
-
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.fab_back_m);
         if (isFabOpen) {
             fab.startAnimation(rotate_backward);
             fab1.startAnimation(fab_close);
@@ -376,8 +424,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             linearLayout.startAnimation(fab_close);
             linearLayout1.startAnimation(fab_close);
             fab3.startAnimation(fab_close);
-            fab1.setClickable(false);
             isFabOpen = false;
+            relativeLayout.setVisibility(View.INVISIBLE);
 
         } else {
 
@@ -388,9 +436,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             linearLayout1.startAnimation(fab_open);
             textView1.startAnimation(fab_open);
             fab3.startAnimation(fab_open);
-            fab1.setClickable(true);
             isFabOpen = true;
-
+            relativeLayout.setVisibility(View.VISIBLE);
         }
     }
 

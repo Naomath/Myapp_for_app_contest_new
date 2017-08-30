@@ -20,16 +20,18 @@ public class GroupTwoWords extends SugarRecord {
     //最初のid
     private ArrayList<TwoWords> arrayList;
     //firebase専用
-    private Calendar calendar;
+    private String calendar;
     //登録した時の時間
     private  String maker;
     //作成者
+    private int down;
+    //ダウンロードしたものは1である
 
     public GroupTwoWords() {
     }
     //普通のコンストラクタ
 
-    public GroupTwoWords(String GROUP_NAME, int SIZE, long FIRST_ID, Calendar calendar, String maker) {
+    public GroupTwoWords(String GROUP_NAME, int SIZE, long FIRST_ID, String calendar, String maker) {
         this.GROUP_NAME = GROUP_NAME;
         this.SIZE = SIZE;
         this.FIRST_ID = FIRST_ID;
@@ -49,9 +51,13 @@ public class GroupTwoWords extends SugarRecord {
         return FIRST_ID;
     }
 
-    public Calendar getCalendar(){return calendar;}
+    public String getCalendar(){return calendar;}
 
     public String getMaker(){return maker;}
+
+    public int getDown() {
+        return down;
+    }
 
     public ArrayList<TwoWords> getArrayList() {
         return arrayList;
@@ -61,7 +67,7 @@ public class GroupTwoWords extends SugarRecord {
         this.arrayList = arrayList;
     }
 
-    public void setCalendar(Calendar calendar){
+    public void setCalendar(String calendar){
         this.calendar = calendar;
     }
 
@@ -69,4 +75,11 @@ public class GroupTwoWords extends SugarRecord {
         this.GROUP_NAME = GROUP_NAME;
     }
 
+    public void setMaker(String maker) {
+        this.maker = maker;
+    }
+
+    public void setDown(int down) {
+        this.down = down;
+    }
 }

@@ -186,8 +186,18 @@ public class SetUpActivity extends AppCompatActivity {
                 long first_id = twoWords.getId();
                 Calendar calendar = Calendar.getInstance();
                 SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
+                Calendar calendar1 = Calendar.getInstance();
+                int year = calendar1.get(Calendar.YEAR);
+                int month = calendar1.get(Calendar.MONTH);
+                int day_str = calendar1.get(Calendar.DAY_OF_MONTH);
+                StringBuffer buf3 = new StringBuffer();
+                buf3.append(String.valueOf(year));
+                buf3.append("-");
+                buf3.append(String.valueOf(month+1));
+                buf3.append("/");
+                buf3.append(String.valueOf(day_str));
                 String maker = preferences.getString("user",null);
-                GroupTwoWords groupTwoWords = new GroupTwoWords(group_name, size, first_id, calendar, maker);
+                GroupTwoWords groupTwoWords = new GroupTwoWords(group_name, size, first_id, buf3.toString(), maker);
                 groupTwoWords.save();
                 //ここでグループとしても登録する
                 Intent intent = new Intent(SetUpActivity.this, MainActivity.class);

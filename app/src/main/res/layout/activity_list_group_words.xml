@@ -6,7 +6,18 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     tools:context="com.lifeistech.naoto.myapplication_app_contest.Activity.ListGroupWordsActivity">
+
     <include layout="@layout/content_main" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fab_back_lg"
+        android:visibility="invisible"
+        android:background="#C8ffffff">
+
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/line2"
         android:layout_width="wrap_content"
@@ -21,20 +32,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="#616161"
-            android:text="　問題を解く　"
-            android:textColor="#ffffff"
+            android:background="#ffffff"
+            android:text="　　問題を解く　　"
+            android:textColor="#000000"
             android:textSize="20dp" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab3"
+            android:id="@+id/fab31"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_gravity="bottom|end"
             android:layout_marginRight="@dimen/fab_margin"
-            android:onClick="fab1"
+            android:clickable="true"
+            android:onClick="fab_edit"
             android:src="@android:drawable/ic_menu_edit"
             android:visibility="invisible"
             app:backgroundTint="@color/colorFAB1"
@@ -59,20 +71,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="#616161"
-            android:text="単語を追加する"
-            android:textColor="#ffffff"
+            android:background="#ffffff"
+            android:text="　単語を追加する　"
+            android:textColor="#000000"
             android:textSize="20dp" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab1"
+            android:id="@+id/fab11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_gravity="bottom|end"
             android:layout_marginRight="@dimen/fab_margin"
-            android:onClick="fab1"
+            android:clickable="true"
+            android:onClick="fab_add"
             android:src="@drawable/plus_white"
             android:visibility="invisible"
             app:backgroundTint="@color/colorFAB1"
@@ -82,12 +95,46 @@
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp" />
     </LinearLayout>
-
     <LinearLayout
+        android:id="@+id/line4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
+        android:layout_marginBottom="90dp"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/text4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#ffffff"
+            android:text="アップロードをする"
+            android:textColor="#000000"
+            android:textSize="20dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab41"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="bottom|end"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:clickable="true"
+            android:onClick="fab_upload"
+            android:src="@android:drawable/stat_sys_upload"
+            android:visibility="invisible"
+            app:backgroundTint="@color/colorFAB1"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp" />
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/line3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
         android:layout_marginBottom="90dp"
         android:orientation="horizontal"
         android:visibility="invisible">
@@ -97,20 +144,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="#616161"
-            android:text="グループ消去する"
-            android:textColor="#ffffff"
+            android:background="#ffffff"
+            android:text="グループを消去する"
+            android:textColor="#000000"
             android:textSize="20dp" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab2"
+            android:id="@+id/fab21"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_gravity="bottom|end"
             android:layout_marginRight="@dimen/fab_margin"
-            android:onClick="fab2"
+            android:clickable="true"
+            android:onClick="fab_delete"
             android:src="@android:drawable/ic_menu_delete"
             android:visibility="invisible"
             app:backgroundTint="@color/colorFAB1"
@@ -126,13 +174,12 @@
         android:layout_alignParentRight="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:onClick="fab"
+        android:onClick="fab_open"
         android:src="@drawable/plus_white"
         app:backgroundTint="@color/colorFAB1"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp" />
-
-
+        app:fabSize="normal"
+        app:pressedTranslationZ="12dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 </android.support.design.widget.CoordinatorLayout>

@@ -20,8 +20,6 @@ public class TwoWords extends SugarRecord {
     private int weak;
     //間違えてない問題は0
     //間違えてる問題は1
-    private String subTitle;
-    //追加登録の時に使う
 
     public TwoWords() {
         //普通のコンストラクタ
@@ -56,10 +54,6 @@ public class TwoWords extends SugarRecord {
         return weak;
     }
 
-    public String getSubTitle() {
-        return subTitle;
-    }
-
     public void setJapanese(String words_japanese) {
         this.words_japanese = words_japanese;
     }
@@ -70,5 +64,9 @@ public class TwoWords extends SugarRecord {
 
     public void setWeak(int weak) {
         this.weak = weak;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
