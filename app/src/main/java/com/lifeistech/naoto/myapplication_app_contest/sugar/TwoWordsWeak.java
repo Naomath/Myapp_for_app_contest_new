@@ -1,4 +1,4 @@
-package com.lifeistech.naoto.myapplication_app_contest.Sugar;
+package com.lifeistech.naoto.myapplication_app_contest.sugar;
 
 import com.orm.SugarRecord;
 

@@ -1,5 +1,6 @@
-package com.lifeistech.naoto.myapplication_app_contest.Activity;
+package com.lifeistech.naoto.myapplication_app_contest.activity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,8 +27,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lifeistech.naoto.myapplication_app_contest.R;
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.GroupTwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWordsAdd;
+import com.lifeistech.naoto.myapplication_app_contest.adapters.ListDownLoadAdapter;
+import com.lifeistech.naoto.myapplication_app_contest.adapters.ListDownLoadDialogAdapter;
 import com.lifeistech.naoto.myapplication_app_contest.adapters.ListSetUp;
 import com.lifeistech.naoto.myapplication_app_contest.adapters.ListUploadAdapter;
 import com.orm.SugarRecord;
@@ -39,38 +43,37 @@ import java.util.List;
 public class ListActivity extends AppCompatActivity {
 
     //登録された単語のグループのリストを扱う
-    ListView listView;
-    ListSetUp adapter;
-    int number_size;
-    Toolbar toolbar;
-    SearchView mSearchView;
-    int mode;
+    ListView g_listView;
+    ListSetUp g_adapter;
+    int g_numberSize;
+    Toolbar g_toolbar;
+    SearchView g_searchView;
+    int g_mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         //toolbarの設定
-        toolbar = (Toolbar) findViewById(R.id.toolbar_list);
-        setSupportActionBar(toolbar);
+        g_toolbar = (Toolbar) findViewById(R.id.toolbar_list);
+        setSupportActionBar(g_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         setTitle("バカ天");
-        //ListViewの設定
-        listView = (ListView) findViewById(R.id.listView2);
-        adapter = new ListSetUp(this, R.layout.list_set_up);
-        listView.setAdapter(adapter);
         //Intentの設定
         Intent intent = getIntent();
-        mode = intent.getIntExtra("mode", 0);
-        if (mode == 1) {
+        g_mode = intent.getIntExtra("mode", 0);
+        if (g_mode == 1) {
             //ダウンロードの時の処理
             invisivleFab();
-            down_load_time();
-        } else if (mode == 2) {
+            downLoadTime();
+        } else if (g_mode == 2) {
             //アップロードの処理
+            g_listView = (ListView) findViewById(R.id.listView2);
+            g_adapter = new ListSetUp(this, R.layout.list_set_up);
+            g_listView.setAdapter(g_adapter);
             invisivleFab();
-            up_load_time();
+            upLoadTime();
         }
     }
 
@@ -79,13 +82,13 @@ public class ListActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
         MenuItem menuItem = menu.findItem(R.id.toolbar_menu_search);
-        mSearchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-        mSearchView.setIconifiedByDefault(true);
-        mSearchView.setSubmitButtonEnabled(false);
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        g_searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        g_searchView.setIconifiedByDefault(true);
+        g_searchView.setSubmitButtonEnabled(false);
+        g_searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (mode == 1) {
+                if (g_mode == 1) {
                     searchGroupDown(query);
                 } else {
                     searchGroupUp(query);
@@ -116,7 +119,15 @@ public class ListActivity extends AppCompatActivity {
         return result;
     }
 
-    public void down_load_time() {
+    public void downLoadTime() {
+        //listviewの設定
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+        g_listView = (ListView) findViewById(R.id.listView2);
+        final ListDownLoadAdapter adapter = new ListDownLoadAdapter(this, R.layout.list_down_load_set_up);
+        g_listView.setAdapter(adapter);
         // visibilityの設定
         TextView textView = (TextView) findViewById(R.id.text_description);
         textView.setText("ダウンロードしたいグループをタッチしてください");
@@ -137,6 +148,7 @@ public class ListActivity extends AppCompatActivity {
                     GroupTwoWords groupTwoWords = snapshot.getValue(GroupTwoWords.class);
                     adapter.add(groupTwoWords);
                 }
+                progressDialog.dismiss();
             }
 
             @Override
@@ -144,7 +156,7 @@ public class ListActivity extends AppCompatActivity {
                 //キャンセルされた時
             }
         });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        g_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final GroupTwoWords groupTwoWords = (GroupTwoWords) adapter.getItem(i);
@@ -152,7 +164,7 @@ public class ListActivity extends AppCompatActivity {
                 builder.setTitle("ダウンロード");
                 final StringBuffer buffer = new StringBuffer();
                 buffer.append("『");
-                buffer.append(groupTwoWords.getGROUP_NAME());
+                buffer.append(groupTwoWords.getGroupName());
                 buffer.append("』をダウンロードしていいですか");
                 builder.setMessage(buffer.toString());
                 builder.setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
@@ -161,6 +173,14 @@ public class ListActivity extends AppCompatActivity {
                         dialogInterface.dismiss();
                     }
                 });
+                //listviewの設定
+                ListView listView = new ListView(ListActivity.this);
+                ListDownLoadDialogAdapter adapter1 = new ListDownLoadDialogAdapter(ListActivity.this, R.layout.list_upload_dialog);
+                listView.setAdapter(adapter1);
+                for(TwoWords twoWords:groupTwoWords.getArrayList()){
+                    adapter1.add(twoWords);
+                }
+                builder.setView(listView).create();
                 builder.setPositiveButton("ダウンロード", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -175,19 +195,24 @@ public class ListActivity extends AppCompatActivity {
                         String calendar_str = buffer1.toString();
                         for(TwoWords twoWords:arrayList){
                             twoWords.setDate(calendar_str);
+                            twoWords.setWeak(0);
                             twoWords.save();
                         }
+                        groupTwoWords.setDown(1);
+                        groupTwoWords.setFirstId(arrayList.get(0).getId());
+                        groupTwoWords.setSize(arrayList.size());
                         groupTwoWords.save();
                         Intent intent = new Intent(ListActivity.this, MainActivity.class);
                         intent.putExtra("download_end",1);
                         startActivity(intent);
                     }
                 });
+                builder.show();
             }
         });
     }
 
-    public void up_load_time() {
+    public void upLoadTime() {
         //アップロードの時の処理
         //先ずはlayoutのvisibilityについての設定
         TextView textView = (TextView) findViewById(R.id.text_description);
@@ -200,30 +225,40 @@ public class ListActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference reference = database.getReference("group");
         adpter_groupaTwoWords_all();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        g_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final GroupTwoWords groupTwoWords = (GroupTwoWords) adapter.getItem(i);
+                final GroupTwoWords groupTwoWords = (GroupTwoWords) g_adapter.getItem(i);
                 //ダイアログの設定
                 AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
                 builder.setTitle("アップロード");
                 StringBuffer buffer = new StringBuffer();
                 buffer.append("アップロードするグループは『");
-                buffer.append(groupTwoWords.getGROUP_NAME());
+                buffer.append(groupTwoWords.getGroupName());
                 buffer.append("』でいいですか？");
                 builder.setMessage(buffer.toString());
                 //listviewの設定
                 ListView listView = new ListView(ListActivity.this);
                 ListUploadAdapter adapter = new ListUploadAdapter(ListActivity.this, R.layout.list_upload_adapter);
                 listView.setAdapter(adapter);
-                int size = groupTwoWords.getSIZE();
-                long first_id = groupTwoWords.getFIRST_ID();
+                final ArrayList<TwoWords> twoWordsArrayList = new ArrayList<TwoWords>();
+                int size = groupTwoWords.getSize();
+                long first_id = groupTwoWords.getFirstId();
                 for (int i2 = 0; i2 < size; i2++) {
                     TwoWords twoWords = TwoWords.findById(TwoWords.class, first_id + i2);
                     if (twoWords.getJapanese() == null) {
                         return;
                     } else {
                         adapter.add(twoWords);
+                        twoWordsArrayList.add(twoWords);
+                    }
+                }
+                List<TwoWordsAdd> twoWordsAddList = SugarRecord.listAll(TwoWordsAdd.class);
+                for(TwoWordsAdd twoWordsAdd:twoWordsAddList){
+                    if(twoWordsAdd.getSubTitle().equals(groupTwoWords.getGroupName())){
+                        TwoWords twoWords = TwoWords.findById(TwoWords.class,twoWordsAdd.getTwo_words_id());
+                        adapter.add(twoWords);
+                        twoWordsArrayList.add(twoWords);
                     }
                 }
                 //終わり
@@ -237,18 +272,9 @@ public class ListActivity extends AppCompatActivity {
                 builder.setPositiveButton("アップロード", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        int size = groupTwoWords.getSIZE();
-                        long first_id = groupTwoWords.getFIRST_ID();
-                        ArrayList<TwoWords> twoWordses = new ArrayList<>();
-                        for (int i2 = 0; i2 < size; i2++) {
-                            TwoWords twoWords = TwoWords.findById(TwoWords.class, first_id + i2);
-                            if (twoWords.getJapanese() != null) {
-                                twoWordses.add(twoWords);
-                            } else {
-                                continue;
-                            }
-                        }
-                        groupTwoWords.setArrayList(twoWordses);
+                        int size = groupTwoWords.getSize();
+                        long first_id = groupTwoWords.getFirstId();
+                        groupTwoWords.setArrayList(twoWordsArrayList);
                         SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
                         String maker = preferences.getString("user", null);
                         groupTwoWords.setMaker(maker);
@@ -266,12 +292,12 @@ public class ListActivity extends AppCompatActivity {
 
     public void adpter_groupaTwoWords_all() {
         List<GroupTwoWords> list = SugarRecord.listAll(GroupTwoWords.class);
-        number_size = list.size();
+        g_numberSize = list.size();
         SharedPreferences preferences = getSharedPreferences("weak_id", MODE_PRIVATE);
         long weka_id = preferences.getLong("weak_id", 0);
         for (GroupTwoWords groupTwoWords : list) {
             if (weka_id != groupTwoWords.getId()) {
-                adapter.add(groupTwoWords);
+                g_adapter.add(groupTwoWords);
             } else {
                 continue;
             }
@@ -290,12 +316,12 @@ public class ListActivity extends AppCompatActivity {
 
     public void searchGroupUp(String query) {
         //検索機能のところのアップロードのところ
-        int first = listView.getFirstVisiblePosition();
-        int last = listView.getLastVisiblePosition();
+        int first = g_listView.getFirstVisiblePosition();
+        int last = g_listView.getLastVisiblePosition();
         int size = last - first + 1;
         for (int i = 0; i < size; i++) {
-            GroupTwoWords item = (GroupTwoWords) listView.getItemAtPosition(first + i);
-            adapter.remove(item);
+            GroupTwoWords item = (GroupTwoWords) g_listView.getItemAtPosition(first + i);
+            g_adapter.remove(item);
         }
         List<GroupTwoWords> list = SugarRecord.listAll(GroupTwoWords.class);
         SharedPreferences preferences = getSharedPreferences("weak_id", MODE_PRIVATE);
@@ -303,8 +329,8 @@ public class ListActivity extends AppCompatActivity {
         for (GroupTwoWords groupTwoWords : list) {
             if (groupTwoWords.getId() == weak_id) {
                 continue;
-            } else if (groupTwoWords.getGROUP_NAME().startsWith(query)) {
-                adapter.add(groupTwoWords);
+            } else if (groupTwoWords.getGroupName().startsWith(query)) {
+                g_adapter.add(groupTwoWords);
             }
         }
     }
@@ -329,16 +355,16 @@ public class ListActivity extends AppCompatActivity {
                 //キャンセルされた時
             }
         });
-        int first = listView.getFirstVisiblePosition();
-        int last = listView.getLastVisiblePosition();
+        int first = g_listView.getFirstVisiblePosition();
+        int last = g_listView.getLastVisiblePosition();
         int size = last - first + 1;
         for (int i = 0; i < size; i++) {
-            GroupTwoWords item = (GroupTwoWords) listView.getItemAtPosition(first + i);
-            adapter.remove(item);
+            GroupTwoWords item = (GroupTwoWords) g_listView.getItemAtPosition(first + i);
+            g_adapter.remove(item);
         }
         for (GroupTwoWords groupTwoWords : arrayList) {
-            if (groupTwoWords.getGROUP_NAME().startsWith(query)) {
-                adapter.add(groupTwoWords);
+            if (groupTwoWords.getGroupName().startsWith(query)) {
+                g_adapter.add(groupTwoWords);
             }
         }
     }

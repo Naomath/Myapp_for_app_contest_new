@@ -1,4 +1,4 @@
-package com.lifeistech.naoto.myapplication_app_contest.Activity;
+package com.lifeistech.naoto.myapplication_app_contest.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,8 +8,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.lifeistech.naoto.myapplication_app_contest.Activity.AnswerActivity;
-import com.lifeistech.naoto.myapplication_app_contest.Activity.MainActivity;
 import com.lifeistech.naoto.myapplication_app_contest.R;
 
 import java.util.ArrayList;
@@ -19,7 +17,6 @@ public class Solve2Activity extends AppCompatActivity {
     ArrayList<String> japaneses;
     ArrayList<String> englishes;
     ArrayList<String> ids;
-    ArrayList<Integer> modes;
     int number;
     int mode;
     long id;

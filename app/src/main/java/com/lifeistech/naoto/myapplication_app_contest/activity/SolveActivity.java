@@ -1,10 +1,10 @@
-package com.lifeistech.naoto.myapplication_app_contest.Activity;
+package com.lifeistech.naoto.myapplication_app_contest.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWords;
 import com.orm.SugarRecord;
 import java.util.ArrayList;
 import java.util.Calendar;

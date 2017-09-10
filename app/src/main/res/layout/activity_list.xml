@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context="com.lifeistech.naoto.myapplication_app_contest.Activity.MainActivity">
+    tools:context="com.lifeistech.naoto.myapplication_app_contest.activity.MainActivity">
 
 
     <LinearLayout
@@ -77,6 +77,16 @@
                 android:text="自分で作ったもの"
                 android:textSize="18dp" />
 
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView5"
+                android:text="右下の丸いボタンの押して『グループを追加する』から単語帳を作れます"
+                android:textSize="15dp"
+                android:visibility="invisible" />
+
+
             <ListView
                 android:id="@+id/listView2"
                 android:layout_width="match_parent"
@@ -99,6 +109,15 @@
                 android:background="#f5f5f5"
                 android:text="ダウンロードしたもの"
                 android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView11"
+                android:text="上のバーの左端を押して『グループをダウンロード』からダウンロードできます"
+                android:textSize="15dp"
+                android:visibility="invisible" />
 
             <ListView
                 android:id="@+id/listDown"

@@ -5,22 +5,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lifeistech.naoto.myapplication_app_contest.R;
-import com.lifeistech.naoto.myapplication_app_contest.classes.TwoWordsForSet;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWords;
 
 /**
- * Created by naoto on 2017/06/04.
+ * Created by naoto on 2017/08/31.
  */
 
-public class ListviewSetUp extends ArrayAdapter<TwoWordsForSet> {
+public class ListDownLoadDialogAdapter extends ArrayAdapter<TwoWords> {
     Context mContext;
     LayoutInflater mLayoutInflater;
     int mCheck;
 
-    public ListviewSetUp(Context context, int check){
+    public ListDownLoadDialogAdapter(Context context, int check) {
         //コンストラクタ
         super(context, check);
         mContext = context;
@@ -29,33 +28,32 @@ public class ListviewSetUp extends ArrayAdapter<TwoWordsForSet> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
-        ViewSetUp view_set_up;
-        if(convertView == null){
+    public View getView(int position, View convertView, ViewGroup parent) {
+       ListDownLoadDialogAdapter.ViewSetUp view_set_up;
+        if (convertView == null) {
             convertView = mLayoutInflater.inflate(mCheck, parent, false);
-            view_set_up = new ViewSetUp(convertView);
+            view_set_up = new ListDownLoadDialogAdapter.ViewSetUp(convertView);
             convertView.setTag(view_set_up);
         } else {
-            view_set_up = ((ViewSetUp) convertView.getTag());
+            view_set_up = ((ListDownLoadDialogAdapter.ViewSetUp) convertView.getTag());
         }
-        TwoWordsForSet item = getItem(position);
-        if(item != null){
+        TwoWords item = getItem(position);
+        if (item != null) {
             view_set_up.japanese_textview.setText(item.getJapanese());
             view_set_up.english_textview.setText(item.getEnglish());
         }
         return convertView;
     }
 
-    private class ViewSetUp{
+    private class ViewSetUp {
         // Listviewのカスタマイズしている
         TextView japanese_textview;
         TextView english_textview;
-        ImageView imageView;
 
-        public ViewSetUp(View view){
-            japanese_textview = ((TextView)view.findViewById(R.id.textlist));
-            english_textview = ((TextView)view.findViewById(R.id.textlist2));
-            imageView = (ImageView)view.findViewById(R.id.imageViewLS0);
+        public ViewSetUp(View view) {
+            japanese_textview = ((TextView) view.findViewById(R.id.upload_text_japanese));
+            english_textview = ((TextView) view.findViewById(R.id.upload_text_english));
         }
     }
 }
+

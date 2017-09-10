@@ -1,4 +1,4 @@
-package com.lifeistech.naoto.myapplication_app_contest.Activity;
+package com.lifeistech.naoto.myapplication_app_contest.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,11 +20,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lifeistech.naoto.myapplication_app_contest.Class.TwoWordsSet;
+import com.lifeistech.naoto.myapplication_app_contest.classes.TwoWordsSet;
 import com.lifeistech.naoto.myapplication_app_contest.R;
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWordsAdd;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.GroupTwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWordsAdd;
 import com.lifeistech.naoto.myapplication_app_contest.adapters.ListGroupWordsListViewSetUp;
 import com.orm.SugarRecord;
 
@@ -60,7 +60,7 @@ public class ListGroupWordsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        setTitle(groupTwoWords.getGROUP_NAME());
+        setTitle(groupTwoWords.getGroupName());
         //toolbar
         final ListView listView = (ListView) findViewById(R.id.listview_LGW);
         adapter = new ListGroupWordsListViewSetUp(this, R.layout.list_group_words_set_up);
@@ -84,9 +84,9 @@ public class ListGroupWordsActivity extends AppCompatActivity {
         });
         //listviewとadapterの設定終了
         //grouptwowordsの設定
-        String group_name = groupTwoWords.getGROUP_NAME();
-        int size = groupTwoWords.getSIZE();
-        long first_id = groupTwoWords.getFIRST_ID();
+        String group_name = groupTwoWords.getGroupName();
+        int size = groupTwoWords.getSize();
+        long first_id = groupTwoWords.getFirstId();
         for (int i = 0; i < size; i++) {
             TwoWords twoWords = TwoWords.findById(TwoWords.class, first_id + i);
             if (twoWords.getJapanese() != null) {
@@ -170,8 +170,8 @@ public class ListGroupWordsActivity extends AppCompatActivity {
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        long id = groupTwoWords.getFIRST_ID();
-                                        for (int i2 = 0; i2 < groupTwoWords.getSIZE(); i2++, id++) {
+                                        long id = groupTwoWords.getFirstId();
+                                        for (int i2 = 0; i2 < groupTwoWords.getSize(); i2++, id++) {
                                             TwoWords twoWords = SugarRecord.findById(TwoWords.class, id);
                                             twoWords.delete();
                                         }
@@ -213,7 +213,7 @@ public class ListGroupWordsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //追加の処理
-                        String group_name = groupTwoWords.getGROUP_NAME();
+                        String group_name = groupTwoWords.getGroupName();
                         Calendar calendar = Calendar.getInstance();
                         final int year = calendar.get(Calendar.YEAR);
                         String year_string = Integer.toString(year);

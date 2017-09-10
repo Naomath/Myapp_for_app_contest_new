@@ -5,15 +5,15 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".Sugar.SugarOrmControl"
+        android:name=".sugar.SugarOrmControl"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:icon="@drawable/icon1"
+        android:icon="@drawable/icon"
         android:label="バカ天"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".Activity.SplashActivity"
+            android:name=".activity.SplashActivity"
             android:screenOrientation="portrait">
 
             <intent-filter>
@@ -37,35 +37,35 @@
             android:value="com.lifeistech.naoto.myapplication_app_contest" />
 
         <activity
-            android:name=".Activity.SolveActivity"
+            android:name=".activity.SolveActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity.AnswerActivity"
+            android:name=".activity.AnswerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity.SetUpActivity"
+            android:name=".activity.SetUpActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity.ListActivity"
+            android:name=".activity.ListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity.ListGroupWordsActivity"
+            android:name=".activity.ListGroupWordsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity.SolveWeakActivity"
+            android:name=".activity.SolveWeakActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity.Solve2Activity"
+            android:name=".activity.Solve2Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity.ListWeakActivity"
+            android:name=".activity.ListWeakActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.SolveGroupActivity"></activity>
+        <activity android:name=".activity.SolveGroupActivity"></activity>
     </application>
 
 </manifest>

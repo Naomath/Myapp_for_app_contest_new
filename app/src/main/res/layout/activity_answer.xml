@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context="com.lifeistech.naoto.myapplication_app_contest.Activity.AnswerActivity">
+    tools:context="com.lifeistech.naoto.myapplication_app_contest.activity.AnswerActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

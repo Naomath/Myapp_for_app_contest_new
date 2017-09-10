@@ -1,22 +1,19 @@
-package com.lifeistech.naoto.myapplication_app_contest.Sugar;
+package com.lifeistech.naoto.myapplication_app_contest.sugar;
 
-import com.google.firebase.database.Exclude;
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 
 /**
  * Created by naoto on 2017/07/23.
  */
 
 public class GroupTwoWords extends SugarRecord {
-    private String GROUP_NAME;
+    private String groupName;
     //グループの名前
-    private int SIZE;
+    private int size;
     // リストのサイズ
-    private long FIRST_ID;
+    private long firstId;
     //最初のid
     private ArrayList<TwoWords> arrayList;
     //firebase専用
@@ -26,29 +23,31 @@ public class GroupTwoWords extends SugarRecord {
     //作成者
     private int down;
     //ダウンロードしたものは1である
+    private String userId;
+    //ユーザーid
 
     public GroupTwoWords() {
     }
     //普通のコンストラクタ
 
-    public GroupTwoWords(String GROUP_NAME, int SIZE, long FIRST_ID, String calendar, String maker) {
-        this.GROUP_NAME = GROUP_NAME;
-        this.SIZE = SIZE;
-        this.FIRST_ID = FIRST_ID;
+    public GroupTwoWords(String groupName, int size, long firstId, String calendar, String maker) {
+        this.groupName = groupName;
+        this.size = size;
+        this.firstId = firstId;
         this.calendar = calendar;
         this.maker = maker;
     }
 
-    public String getGROUP_NAME() {
-        return GROUP_NAME;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public int getSIZE() {
-        return SIZE;
+    public int getSize() {
+        return size;
     }
 
-    public long getFIRST_ID() {
-        return FIRST_ID;
+    public long getFirstId() {
+        return firstId;
     }
 
     public String getCalendar(){return calendar;}
@@ -63,6 +62,8 @@ public class GroupTwoWords extends SugarRecord {
         return arrayList;
     }
 
+    public String  getUserId(){return userId;}
+
     public void setArrayList(ArrayList<TwoWords> arrayList) {
         this.arrayList = arrayList;
     }
@@ -71,8 +72,8 @@ public class GroupTwoWords extends SugarRecord {
         this.calendar = calendar;
     }
 
-    public void setGROUP_NAME(String GROUP_NAME) {
-        this.GROUP_NAME = GROUP_NAME;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public void setMaker(String maker) {
@@ -81,5 +82,15 @@ public class GroupTwoWords extends SugarRecord {
 
     public void setDown(int down) {
         this.down = down;
+    }
+
+    public void setFirstId(long firstId) {
+        this.firstId = firstId;
+    }
+
+    public void setUserId(String userId){this.userId = userId;}
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }

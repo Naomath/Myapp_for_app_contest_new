@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lifeistech.naoto.myapplication_app_contest.R;
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWordsWeak;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWordsWeak;
 
 /**
  * Created by naoto on 2017/08/13.

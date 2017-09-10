@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context="com.lifeistech.naoto.myapplication_app_contest.Activity.Solve2Activity">
+    tools:context="com.lifeistech.naoto.myapplication_app_contest.activity.Solve2Activity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Quesyion"
+        android:text="Question"
         android:textSize="30dp"
         android:textColor="#606060"
         android:layout_alignParentTop="true"

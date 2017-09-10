@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context="com.lifeistech.naoto.myapplication_app_contest.Activity.SplashActivity">
+    tools:context="com.lifeistech.naoto.myapplication_app_contest.activity.SplashActivity">
 
     <ImageView
         android:id="@+id/imageView"

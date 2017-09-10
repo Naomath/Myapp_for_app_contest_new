@@ -8,9 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.lifeistech.naoto.myapplication_app_contest.R;
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
-
-import java.util.Calendar;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.GroupTwoWords;
 
 /**
  * Created by naoto on 2017/07/24.
@@ -41,7 +39,7 @@ public class ListSetUp extends ArrayAdapter<GroupTwoWords> {
         }
         GroupTwoWords item = getItem(position);
         if(item != null){
-            view_set_up2.GROUP_NAME.setText(item.getGROUP_NAME());
+            view_set_up2.GROUP_NAME.setText(item.getGroupName());
             view_set_up2.GROUP_TIME.setText(item.getCalendar());
         }
         return convertView;

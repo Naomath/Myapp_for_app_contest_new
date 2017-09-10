@@ -1,4 +1,4 @@
-package com.lifeistech.naoto.myapplication_app_contest.Activity;
+package com.lifeistech.naoto.myapplication_app_contest.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,9 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lifeistech.naoto.myapplication_app_contest.R;
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
-import com.lifeistech.naoto.myapplication_app_contest.Class.TwoWordsForSet;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.GroupTwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.classes.TwoWordsForSet;
 import com.lifeistech.naoto.myapplication_app_contest.adapters.ListviewSetUp;
 
 import java.util.ArrayList;
@@ -184,7 +184,6 @@ public class SetUpActivity extends AppCompatActivity {
                 int size = list.size();
                 TwoWords twoWords = list.get(0);
                 long first_id = twoWords.getId();
-                Calendar calendar = Calendar.getInstance();
                 SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
                 Calendar calendar1 = Calendar.getInstance();
                 int year = calendar1.get(Calendar.YEAR);
@@ -198,6 +197,8 @@ public class SetUpActivity extends AppCompatActivity {
                 buf3.append(String.valueOf(day_str));
                 String maker = preferences.getString("user",null);
                 GroupTwoWords groupTwoWords = new GroupTwoWords(group_name, size, first_id, buf3.toString(), maker);
+                SharedPreferences preferencesUserID = getSharedPreferences("user_id",MODE_PRIVATE);
+                groupTwoWords.setUserId(preferencesUserID.getString("user_id",null));
                 groupTwoWords.save();
                 //ここでグループとしても登録する
                 Intent intent = new Intent(SetUpActivity.this, MainActivity.class);

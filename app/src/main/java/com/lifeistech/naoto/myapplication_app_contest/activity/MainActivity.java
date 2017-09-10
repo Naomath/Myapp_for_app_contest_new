@@ -1,4 +1,4 @@
-package com.lifeistech.naoto.myapplication_app_contest.Activity;
+package com.lifeistech.naoto.myapplication_app_contest.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,14 +25,20 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.lifeistech.naoto.myapplication_app_contest.R;
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.GroupTwoWords;
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWords;
-import com.lifeistech.naoto.myapplication_app_contest.Sugar.TwoWordsWeak;
 import com.lifeistech.naoto.myapplication_app_contest.adapters.ListDownLoadAdapter;
 import com.lifeistech.naoto.myapplication_app_contest.adapters.ListSetUp;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.GroupTwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWords;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWordsWeak;
 import com.orm.SugarRecord;
+
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.List;
 
@@ -76,11 +82,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         int upload_end = intent.getIntExtra("upload", 0);
         if (upload_end == 1) {
-            make_Toast("アップロードしました");
+            makeToast("アップロードしました");
         }
-        int download = intent.getIntExtra("download_end",0);
-        if(download == 1){
-            make_Toast("ダウンロードが終わりました");
+        int download = intent.getIntExtra("download_end", 0);
+        if (download == 1) {
+            makeToast("ダウンロードが終わりました");
         }
         //リストビューの設定(自分で作成したもの)
         ListView listView = (ListView) findViewById(R.id.listView2);
@@ -100,14 +106,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         number_size = list.size();
         SharedPreferences preferences1 = getSharedPreferences("weak_id", 0);
         long weak_id = preferences1.getLong("weak_id", 0);
+        int there = 0;
         for (GroupTwoWords groupTwoWords : list) {
-            if (groupTwoWords.getGROUP_NAME().equals("間違えた")) {
-            }else {
-                if(groupTwoWords.getDown()==0){
+            if (groupTwoWords.getGroupName().equals("間違えた")) {
+            } else {
+                if (groupTwoWords.getDown() == 0) {
                     adapter.add(groupTwoWords);
+                    there++;
                 }
             }
 
+        }
+        if (there == 0) {
+            TextView textView = (TextView) findViewById(R.id.textView7);
+            textView.setVisibility(View.VISIBLE);
         }
         createFab();
         SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
@@ -141,22 +153,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapterWeak.add(groupTwoWords);
         //listview(download)
         ListView listDown = (ListView) findViewById(R.id.listDown);
-        ListDownLoadAdapter listDownLoadAdapter = new ListDownLoadAdapter(this, R.layout.list_down_load_set_up);
+        final ListDownLoadAdapter listDownLoadAdapter = new ListDownLoadAdapter(this, R.layout.list_down_load_set_up);
         listDown.setAdapter(listDownLoadAdapter);
         listDown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                GroupTwoWords groupTwoWords1 = (GroupTwoWords) adapter.getItem(i);
+                GroupTwoWords groupTwoWords1 = (GroupTwoWords) listDownLoadAdapter.getItem(i);
                 long id = groupTwoWords1.getId();
                 Intent intent = new Intent(MainActivity.this, ListGroupWordsActivity.class);
                 intent.putExtra("ID_GROUP_TWOWORDS", id);
                 startActivity(intent);
             }
         });
-        for(GroupTwoWords groupTwoWords1:list){
-            if(groupTwoWords.getDown() == 1){
-                adapter.add(groupTwoWords1);
+        int there2 = 0;
+        for (GroupTwoWords groupTwoWords1 : list) {
+            if (groupTwoWords1.getDown() == 1) {
+                listDownLoadAdapter.add(groupTwoWords1);
+                there2++;
             }
+        }
+        if (there2 == 0) {
+            TextView textView = (TextView) findViewById(R.id.textView8);
+            textView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -256,26 +274,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             alert.show();
         } else if (id == R.id.nav_download) {
             //ダウンロード
-            down_load();
+            downLoad();
         } else if (id == R.id.nav_registration) {
-            showDialog_set_up();
+            showDialogSetUp();
         } else if (id == R.id.nav_solve) {
-            showDialog_solve();
+            showDialogSolve();
         } else if (id == R.id.nav_upload) {
             //アップロード
-            up_load();
+            upLoad();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    public void make_Toast(String message) {
+    public void makeToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
     }
 
-    public void showDialog_solve() {
+    public void showDialogSolve() {
         //ダイアログを表示するメソッド
         //solveの時
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -325,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.show();
     }
 
-    public void showDialog_set_up() {
+    public void showDialogSetUp() {
         // 登録のダイアログ
         final EditText editText = new EditText(MainActivity.this);
         //ダイアログで入力用のedittext
@@ -346,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 String group_name = editText.getText().toString();
                 //SugarRecord.listAll(TwoWords.class);
                 if (group_name.length() == 0) {
-                    make_Toast("グループの名前が登録されていません");
+                    makeToast("グループの名前が登録されていません");
                 } else {
                     Intent intent = new Intent(MainActivity.this, SetUpActivity.class);
                     intent.putExtra("group_name", group_name);
@@ -372,27 +390,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 editor.commit();
                 TextView textView = (TextView) findViewById(R.id.textView4);
                 textView.setText(editText.getText().toString());
+                String userId = RandomStringUtils.randomAlphabetic(12);
+                SharedPreferences preferencesUserId = getSharedPreferences("user_id",MODE_PRIVATE);
+                SharedPreferences.Editor editorUserId = preferencesUserId.edit();
+                editorUserId.putString("user_id",userId);
+                editorUserId.commit();
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("UserIdは");
+                buffer.append(userId);
+                buffer.append("”です");
+                makeToast(buffer.toString());
             }
         });
         builder.setCancelable(false).show();
-        //後weakの設定
         GroupTwoWords groupTwoWords = new GroupTwoWords();
-        groupTwoWords.setGROUP_NAME("間違えた");
+        groupTwoWords.setGroupName("間違えた");
         groupTwoWords.save();
         SharedPreferences preferences1 = getSharedPreferences("weak_id", 0);
-        SharedPreferences.Editor editor = preferences1.edit();
-        editor.putLong("weak_id", groupTwoWords.getId());
-        editor.commit();
+        SharedPreferences.Editor editor1 = preferences1.edit();
+        editor1.putLong("weak_id", groupTwoWords.getId());
+        editor1.commit();
     }
 
-    public void down_load() {
+    public void downLoad() {
         //ダウンロードの処理
         Intent intent = new Intent(this, ListActivity.class);
         intent.putExtra("mode", 1);
         startActivity(intent);
     }
 
-    public void up_load() {
+    public void upLoad() {
         //アップロードの処理
         Intent intent = new Intent(this, ListActivity.class);
         intent.putExtra("mode", 2);
@@ -446,11 +473,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void fab1(View view) {
-        showDialog_set_up();
+        showDialogSetUp();
     }
 
     public void fab2(View view) {
-        showDialog_solve();
+        showDialogSetUp();
     }
 
 }
