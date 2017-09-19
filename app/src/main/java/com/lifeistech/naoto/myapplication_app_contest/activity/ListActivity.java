@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -53,7 +54,7 @@ public class ListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
+        setContentView(R.layout.activity_list_true);
         //toolbarの設定
         g_toolbar = (Toolbar) findViewById(R.id.toolbar_list);
         setSupportActionBar(g_toolbar);
@@ -65,14 +66,12 @@ public class ListActivity extends AppCompatActivity {
         g_mode = intent.getIntExtra("mode", 0);
         if (g_mode == 1) {
             //ダウンロードの時の処理
-            invisivleFab();
             downLoadTime();
         } else if (g_mode == 2) {
             //アップロードの処理
-            g_listView = (ListView) findViewById(R.id.listView2);
+            g_listView = (ListView) findViewById(R.id.listView);
             g_adapter = new ListSetUp(this, R.layout.list_set_up);
             g_listView.setAdapter(g_adapter);
-            invisivleFab();
             upLoadTime();
         }
     }
@@ -306,12 +305,6 @@ public class ListActivity extends AppCompatActivity {
 
     public void makeToast(String str) {
         Toast.makeText(this, str, Toast.LENGTH_SHORT);
-    }
-
-    public void invisivleFab() {
-        //fabを非表示にする
-        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        floatingActionButton.setVisibility(View.INVISIBLE);
     }
 
     public void searchGroupUp(String query) {

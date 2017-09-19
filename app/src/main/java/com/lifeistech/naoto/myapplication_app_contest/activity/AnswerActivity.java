@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lifeistech.naoto.myapplication_app_contest.R;
 import com.lifeistech.naoto.myapplication_app_contest.sugar.GroupTwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWords;
@@ -19,6 +21,7 @@ import com.orm.SugarRecord;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class AnswerActivity extends AppCompatActivity {
 
@@ -82,8 +85,8 @@ public class AnswerActivity extends AppCompatActivity {
                 twoWords.save();
                 TwoWordsWeak twoWordsWeak = new TwoWordsWeak(g_japaneses.get(g_number), g_englishes.get(g_number));
                 twoWordsWeak.save();
-                SharedPreferences preferences = getSharedPreferences("weak_id",MODE_PRIVATE);
-                long weak_id = preferences.getLong("weak_id",0);
+                SharedPreferences preferences = getSharedPreferences("weak_id", MODE_PRIVATE);
+                long weak_id = preferences.getLong("weak_id", 0);
                 GroupTwoWords groupTwoWords = GroupTwoWords.findById(GroupTwoWords.class, weak_id);
                 Calendar calendar1 = Calendar.getInstance();
                 int year = calendar1.get(Calendar.YEAR);
@@ -92,7 +95,7 @@ public class AnswerActivity extends AppCompatActivity {
                 StringBuffer buf3 = new StringBuffer();
                 buf3.append(String.valueOf(year));
                 buf3.append("-");
-                buf3.append(String.valueOf(month+1));
+                buf3.append(String.valueOf(month + 1));
                 buf3.append("/");
                 buf3.append(String.valueOf(day_str));
                 groupTwoWords.setCalendar(buf3.toString());
@@ -120,6 +123,7 @@ public class AnswerActivity extends AppCompatActivity {
             Intent intent = new Intent(AnswerActivity.this, SolveWeakActivity.class);
             startActivity(intent);
         } else if (g_mode == 2) {
+            recordQuestions();
             Intent intent = new Intent(AnswerActivity.this, SolveGroupActivity.class);
             intent.putExtra("id_group", g_id);
             startActivity(intent);
@@ -132,6 +136,7 @@ public class AnswerActivity extends AppCompatActivity {
             intent.putExtra("ID_GROUP_TWOWORDS", g_id);
             startActivity(intent);
         } else {
+            recordQuestions();
             Intent intent = new Intent(AnswerActivity.this, MainActivity.class);
             startActivity(intent);
         }
@@ -156,4 +161,28 @@ public class AnswerActivity extends AppCompatActivity {
         });
         builder.show();
     }
+
+    public void recordQuestions() {
+        //グラフに使うためのやつ
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = getSharedPreferences("chart_questions", MODE_PRIVATE);
+        ArrayList<String> calendars = gson.fromJson(sharedPreferences.getString("calendars", null), new TypeToken<List>() {
+        }.getType());
+        ArrayList<String> questions = gson.fromJson(sharedPreferences.getString("questions", null), new TypeToken<List>() {
+        }.getType());
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(String.valueOf(month));
+        buffer.append("/");
+        buffer.append(String.valueOf(day));
+        calendars.add(buffer.toString());
+        questions.add(String.valueOf(g_japaneses.size()));
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("calendars",gson.toJson(calendars));
+        editor.putString("questions", gson.toJson(questions));
+        editor.commit();
+    }
+
 }

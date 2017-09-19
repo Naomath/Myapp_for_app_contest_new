@@ -199,6 +199,7 @@ public class SetUpActivity extends AppCompatActivity {
                 GroupTwoWords groupTwoWords = new GroupTwoWords(group_name, size, first_id, buf3.toString(), maker);
                 SharedPreferences preferencesUserID = getSharedPreferences("user_id",MODE_PRIVATE);
                 groupTwoWords.setUserId(preferencesUserID.getString("user_id",null));
+                groupTwoWords.setDown(0);
                 groupTwoWords.save();
                 //ここでグループとしても登録する
                 Intent intent = new Intent(SetUpActivity.this, MainActivity.class);
