@@ -50,12 +50,10 @@ public class ListviewSetUp extends ArrayAdapter<TwoWordsForSet> {
         // Listviewのカスタマイズしている
         TextView japanese_textview;
         TextView english_textview;
-        ImageView imageView;
 
         public ViewSetUp(View view){
             japanese_textview = ((TextView)view.findViewById(R.id.textlist));
             english_textview = ((TextView)view.findViewById(R.id.textlist2));
-            imageView = (ImageView)view.findViewById(R.id.imageViewLS0);
         }
     }
 }

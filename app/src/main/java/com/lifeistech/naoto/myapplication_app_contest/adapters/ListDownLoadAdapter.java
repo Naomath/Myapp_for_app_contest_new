@@ -58,7 +58,6 @@ public class ListDownLoadAdapter extends ArrayAdapter<GroupTwoWords> {
         TextView groupMaker;
         TextView groupTime;
         TextView userId;
-        ImageView imageView;
 
         public ViewSetUp(View view) {
             groupName = (TextView) view.findViewById(R.id.group_name_textview);
@@ -66,7 +65,6 @@ public class ListDownLoadAdapter extends ArrayAdapter<GroupTwoWords> {
             groupMaker = (TextView) view.findViewById(R.id.group_maker);
             groupTime = (TextView) view.findViewById(R.id.group_time);
             userId = (TextView) view.findViewById(R.id.textViewUserId);
-            imageView = (ImageView) view.findViewById(R.id.imageViewHole);
         }
     }
 }

@@ -21,7 +21,6 @@ import com.orm.SugarRecord;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class AnswerActivity extends AppCompatActivity {
 
@@ -31,6 +30,7 @@ public class AnswerActivity extends AppCompatActivity {
     ArrayList<String> g_ids;
     int g_number;
     int g_mode;
+    int g_modeQuestion;
     long g_id;
 
     @Override
@@ -46,8 +46,8 @@ public class AnswerActivity extends AppCompatActivity {
         g_id = intent.getLongExtra("id_group", 0);
         TextView textView = (TextView) findViewById(R.id.textView3);
         SharedPreferences pref = getSharedPreferences("question_mode", MODE_PRIVATE);
-        g_mode = pref.getInt("question_mode", 0);
-        if (g_mode == 0) {
+        g_modeQuestion = pref.getInt("question_mode", 0);
+        if (g_modeQuestion == 0) {
             //先に和訳
             textView.setText(g_englishes.get(g_number));
         } else {
@@ -64,6 +64,7 @@ public class AnswerActivity extends AppCompatActivity {
             Intent intent = new Intent(AnswerActivity.this, Solve2Activity.class);
             intent.putExtra("japaneses", g_japaneses);
             intent.putExtra("englishes", g_englishes);
+            intent.putExtra("ids", g_ids);
             intent.putExtra("number", g_number + 1);
             startActivity(intent);
         }
@@ -110,6 +111,7 @@ public class AnswerActivity extends AppCompatActivity {
             Intent intent = new Intent(AnswerActivity.this, Solve2Activity.class);
             intent.putExtra("japaneses", g_japaneses);
             intent.putExtra("englishes", g_englishes);
+            intent.putExtra("ids", g_ids);
             intent.putExtra("number", g_number + 1);
             startActivity(intent);
         }
@@ -159,7 +161,7 @@ public class AnswerActivity extends AppCompatActivity {
                 thinkMode();
             }
         });
-        builder.show();
+        builder.setCancelable(false).show();
     }
 
     public void recordQuestions() {
@@ -169,9 +171,9 @@ public class AnswerActivity extends AppCompatActivity {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         Gson gson = new Gson();
         SharedPreferences sharedPreferences = getSharedPreferences("chart_questions", MODE_PRIVATE);
-        ArrayList<String> calendars = gson.fromJson(sharedPreferences.getString("calendars", null), new TypeToken<List>() {
+        ArrayList<String> calendars = gson.fromJson(sharedPreferences.getString("calendars", null), new TypeToken<ArrayList>() {
         }.getType());
-        ArrayList<String> questions = gson.fromJson(sharedPreferences.getString("questions", null), new TypeToken<List>() {
+        ArrayList<String> questions = gson.fromJson(sharedPreferences.getString("questions", null), new TypeToken<ArrayList>() {
         }.getType());
         StringBuffer buffer = new StringBuffer();
         buffer.append(String.valueOf(month));
@@ -180,7 +182,7 @@ public class AnswerActivity extends AppCompatActivity {
         calendars.add(buffer.toString());
         questions.add(String.valueOf(g_japaneses.size()));
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("calendars",gson.toJson(calendars));
+        editor.putString("calendars", gson.toJson(calendars));
         editor.putString("questions", gson.toJson(questions));
         editor.commit();
     }

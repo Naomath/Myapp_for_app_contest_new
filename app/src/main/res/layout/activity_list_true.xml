@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -20,9 +21,27 @@
             android:background="#ffeb3b"
             app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_description"
+        android:layout_marginLeft="16dp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="#000000"
+        android:textSize="13dp" />
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_marginLeft="16dp"
+        android:background="#ffffff"
+        android:gravity="left|center"
+        android:text="自分で作ったもの"
+        android:textColor="#0288d1"
+        android:textSize="18dp" />
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"/>
 </LinearLayout>

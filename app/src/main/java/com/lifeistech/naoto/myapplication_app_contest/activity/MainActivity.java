@@ -14,13 +14,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -44,6 +45,7 @@ import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWordsWeak;
 import com.orm.SugarRecord;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -124,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String user = preferences.getString("user", null);
             buffer.append(user);
             textView.setText(buffer.toString());
+            makeChart();
         }
         //リストビュー間違えやすいの
         List<GroupTwoWords> list = SugarRecord.listAll(GroupTwoWords.class);
@@ -141,6 +144,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+        int totalHeight = 0;
+        for (int i = 0; i < adapter.getCount(); i++) {
+            View item = adapter.getView(i, null, listView);
+            item.measure(View.MeasureSpec.UNSPECIFIED,
+                    View.MeasureSpec.UNSPECIFIED);
+            totalHeight += item.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams layoutParams = listView.getLayoutParams();
+        layoutParams.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
+        listView.setLayoutParams(layoutParams);
         if (there == 0) {
             TextView textView = (TextView) findViewById(R.id.textView7);
             textView.setVisibility(View.VISIBLE);
@@ -186,8 +199,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             TextView textView = (TextView) findViewById(R.id.textView8);
             textView.setVisibility(View.VISIBLE);
         }
-        //グラフの設定
-       // makeChart();
     }
 
     @Override
@@ -248,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
             final String[] items = {" 先に和訳を表示する(デフォルト)", "先にスペルを表示する"};
             final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
-            alert.setTitle("Title");
+            alert.setTitle("出題形式");
             alert.setSingleChoiceItems(items, mCheckedItem, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -294,6 +305,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_upload) {
             //アップロード
             upLoad();
+        }else if(id == R.id.nav_user){
+            //ユーザー
+            showDialogUser();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -425,13 +439,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         StringBuffer buffer = new StringBuffer();
-        buffer.append(month);
+        buffer.append(month + 1);
         buffer.append("/");
         buffer.append(day);
         SharedPreferences preferencesCalendarFirst = getSharedPreferences("first calendar", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferencesCalendarFirst.edit();
         editor.putString("calendar", buffer.toString());
         editor.commit();
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = getSharedPreferences("chart_questions", MODE_PRIVATE);
+        SharedPreferences.Editor editorList = sharedPreferences.edit();
+        ArrayList<String> calendars = new ArrayList<>();
+        ArrayList<String> questions = new ArrayList<>();
+        editorList.putString("calendars", gson.toJson(calendars));
+        editorList.putString("questions", gson.toJson(questions));
+        editorList.commit();
+        makeChartNoMessage();
     }
 
 
@@ -447,6 +470,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(this, ListActivity.class);
         intent.putExtra("mode", 2);
         startActivity(intent);
+    }
+
+    public void showDialogUser(){
+        //ユーザー情報のダイアログ
+        final SharedPreferences preferences = getSharedPreferences("user",MODE_PRIVATE);
+        SharedPreferences preferencesId = getSharedPreferences("user_id",MODE_PRIVATE);
+        String userName = preferences.getString("user",null);
+        String userId = preferencesId.getString("user_id",null);
+        LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        TextView textViewName = new TextView(this);
+        textViewName.setText("ユーザー名");
+        final EditText editTextName = new EditText(this);
+        editTextName.setText(userName);
+        TextView textViewId = new TextView(this);
+        textViewId.setText("ユーザーID");
+        TextView textViewId2 = new TextView(this);
+        textViewId2.setText(userId);
+        linearLayout.addView(textViewName);
+        linearLayout.addView(editTextName);
+        linearLayout.addView(textViewId);
+        linearLayout.addView(textViewId2);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("ユーザー情報");
+        alertDialogBuilder.setView(linearLayout);
+        alertDialogBuilder.setPositiveButton("決定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //okの時の処理
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("user",editTextName.getText().toString());
+                editor.commit();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //キャンセルの時の処理
+                dialogInterface.dismiss();
+            }
+        });
+        alertDialogBuilder.show();
     }
 
     public void createFab() {
@@ -505,35 +570,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void makeChart() {
         //グラフを作る処理
-      //  barChart = (BarChart) findViewById(R.id.chart_home);
+        barChart = (BarChart) findViewById(R.id.chart_home);
         SharedPreferences preferencesFirstDay = getSharedPreferences("first calendar", MODE_PRIVATE);
-        String calendarStr = preferencesFirstDay.getString("calendar",null);
+        String calendarStr = preferencesFirstDay.getString("calendar", null);
         Gson gson = new Gson();
         SharedPreferences sharedPreferences = getSharedPreferences("chart_questions", MODE_PRIVATE);
         ArrayList<String> calendars = gson.fromJson(sharedPreferences.getString("calendars", null), new TypeToken<List>() {
         }.getType());
         ArrayList<String> questions = gson.fromJson(sharedPreferences.getString("questions", null), new TypeToken<List>() {
         }.getType());
-        List<BarEntry> entries = new ArrayList<>();
-        List<String> values = new ArrayList<>();
-        values.add(calendarStr);
-        if(calendars == null){
-
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        ArrayList<String> values = new ArrayList<>();
+        if (calendars.size() == 0) {
+            makeChartNoMessage();
+        } else if (!(calendars.get(0).equals(calendarStr))) {
+            values.add(calendarStr);
+            barChartSystem2(calendars,questions,entries,values);
         }else {
-            for (String calendar : calendars) {
-                values.add(calendar);
-            }
-            for(int i = 0;i<questions.size();i++){
-                int entryInteger = Integer.parseInt(questions.get(i));
-                entries.add(new BarEntry(entryInteger,i+1));
-            }
-            BarDataSet data = new BarDataSet(entries, "解いた問題数");
-            data.setColor(Color.YELLOW);
-            BarData data1 = new BarData(values, data);
-            barChart.setData(data1);
-            barChart.invalidate();
+            barChartSystem2(calendars,questions,entries,values);
         }
+    }
 
+    public void makeChartNoMessage() {
+        barChart = (BarChart) findViewById(R.id.chart_home);
+        barChart.setVisibility(View.GONE);
+        Button button = (Button) findViewById(R.id.chart_btn);
+        button.setVisibility(View.GONE);
+        TextView textView = (TextView) findViewById(R.id.chart_text);
+        textView.setVisibility(View.VISIBLE);
+    }
+
+    public void barChartSystem2(ArrayList<String> calendars, ArrayList<String> questions,ArrayList<BarEntry> entries, ArrayList<String> values){
+        for (String calendar : calendars) {
+            values.add(calendar);
+        }
+        for (int i = 0; i < questions.size(); i++) {
+            int entryInteger = Integer.parseInt(questions.get(i));
+            entries.add(new BarEntry(entryInteger, i + 1));
+        }
+        BarDataSet data = new BarDataSet(entries, "解いた問題数");
+        data.setColor(Color.CYAN);
+        BarData data1 = new BarData(values, data);
+        barChart.setData(data1);
+        barChart.invalidate();
     }
 
 }

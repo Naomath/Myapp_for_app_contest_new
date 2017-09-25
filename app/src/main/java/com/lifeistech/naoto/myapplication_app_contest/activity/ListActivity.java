@@ -124,7 +124,7 @@ public class ListActivity extends AppCompatActivity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
-        g_listView = (ListView) findViewById(R.id.listView2);
+        g_listView = (ListView) findViewById(R.id.listView);
         final ListDownLoadAdapter adapter = new ListDownLoadAdapter(this, R.layout.list_down_load_set_up);
         g_listView.setAdapter(adapter);
         // visibilityの設定
@@ -132,10 +132,6 @@ public class ListActivity extends AppCompatActivity {
         textView.setText("ダウンロードしたいグループをタッチしてください");
         TextView textView1 = (TextView) findViewById(R.id.textView5);
         textView1.setText("ダウンロードできるもの");
-        RelativeLayout layout = (RelativeLayout) findViewById(R.id.layout1);
-        layout.setVisibility(View.INVISIBLE);
-        RelativeLayout layout1 = (RelativeLayout) findViewById(R.id.layout3);
-        layout1.setVisibility(View.INVISIBLE);
         //ダウンロードの時の処理
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("group");
@@ -216,10 +212,6 @@ public class ListActivity extends AppCompatActivity {
         //先ずはlayoutのvisibilityについての設定
         TextView textView = (TextView) findViewById(R.id.text_description);
         textView.setText("アップロードしたいグループをタッチしてください");
-        RelativeLayout layout = (RelativeLayout) findViewById(R.id.layout1);
-        layout.setVisibility(View.INVISIBLE);
-        RelativeLayout layout1 = (RelativeLayout) findViewById(R.id.layout3);
-        layout1.setVisibility(View.INVISIBLE);
         //firebaseの設定
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference reference = database.getReference("group");

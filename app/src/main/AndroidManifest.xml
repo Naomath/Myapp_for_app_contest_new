@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".activity.MainActivity"
             android:screenOrientation="portrait">
 
             <intent-filter>
@@ -60,11 +60,7 @@
         <activity
             android:name=".activity.ListWeakActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.MainActivity"
-            android:label="@string/title_activity_main"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".activity.SolveGroupActivity"></activity>
     </application>
 

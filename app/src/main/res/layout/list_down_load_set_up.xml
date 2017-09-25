@@ -3,39 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="100dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="2dp"
-        android:layout_marginLeft="9dp"
-        android:layout_marginRight="7dp"
-        android:layout_marginTop="3dp"
-        android:background="@drawable/linearlayout_shadow">
+        android:layout_marginLeft="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="3dp"
-                    android:id="@+id/imageViewHole"
-                    android:layout_marginLeft="9dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="3dp"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/bitmap" />
-
-            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -80,7 +58,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginBottom="7dp"
                                 android:layout_weight="1"
-                                android:gravity="bottom|right"
+                                android:gravity="center"
                                 android:text="作成者"
                                 android:textSize="15dp" />
 
@@ -93,20 +71,20 @@
                                 <TextView
                                     android:id="@+id/group_maker"
                                     android:layout_width="match_parent"
-                                    android:layout_height="fill_parent"
+                                    android:layout_height="match_parent"
                                     android:layout_alignParentTop="true"
                                     android:layout_marginBottom="7dp"
                                     android:layout_marginRight="10dp"
                                     android:layout_weight="1"
-                                    android:gravity="bottom|right"
+                                    android:gravity="center"
                                     android:textSize="15dp" />
 
                                 <TextView
                                     android:id="@+id/textViewUserId"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:text="TextView"
+                                    android:layout_gravity="center"
                                     android:textSize="7dp" />
                             </LinearLayout>
 
@@ -124,7 +102,7 @@
                                 android:layout_height="fill_parent"
                                 android:layout_marginBottom="7dp"
                                 android:layout_weight="1"
-                                android:gravity="bottom|right"
+                                android:gravity="center"
                                 android:text="最終変更日"
                                 android:textSize="15dp" />
 
