@@ -17,21 +17,29 @@ public class TwoWords extends SugarRecord {
     private String date;
     //登録した日付の管理
     //stringで管理する
-    private int weak;
-    //間違えてない問題は0
-    //間違えてる問題は1
+    private int numberOfSolve;
+    //何回解いたか
+    private int numberOfWeak;
+    //何回間違えたか
+    private long weakId;
+    //誤答率が70%以上の時のweakのid
+    private long groupId;
+    //属しているグループのid
+    private int weakDecisioon;
+    //weakに属しているかどうか
+
 
     public TwoWords() {
         //普通のコンストラクタ
         //使うことはない
     }
 
-    public TwoWords(String title, String words_japanese, String words_english, String date) {
+    public TwoWords(String title, String words_japanese, String words_english, String date, long groupId) {
         this.title = title;
         this.words_japanese = words_japanese;
         this.words_english = words_english;
         this.date = date;
-        weak = 0;
+        this.groupId = groupId;
     }
 
     public String getJapanese() {
@@ -50,8 +58,31 @@ public class TwoWords extends SugarRecord {
         return date;
     }
 
-    public int getWeak() {
-        return weak;
+
+    public int getNumberOfSolve() {
+        return numberOfSolve;
+    }
+
+    public int getNumberOfWeak() {
+        return numberOfWeak;
+    }
+
+    public long getWeakId() {
+        return weakId;
+    }
+
+    public long getGroupId() {
+        return groupId;
+    }
+
+    public int getWeakDecisioon() {
+        return weakDecisioon;
+    }
+
+    public int getPercent() {
+        float percent = this.numberOfWeak / numberOfSolve;
+        int percentInteger = (int) percent * 100;
+        return percentInteger;
     }
 
     public void setJapanese(String words_japanese) {
@@ -62,11 +93,28 @@ public class TwoWords extends SugarRecord {
         this.words_english = words_english;
     }
 
-    public void setWeak(int weak) {
-        this.weak = weak;
-    }
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public void setNumberOfSolve(int numberOSolve) {
+        this.numberOfSolve = numberOSolve;
+    }
+
+    public void setNumberOfWeak(int numberOfWeak) {
+        this.numberOfWeak = numberOfWeak;
+    }
+
+    public void setWeakId(long weakId) {
+        this.weakId = weakId;
+    }
+
+    public void setGroupId(long groupId) {
+        this.groupId = groupId;
+    }
+
+    public void setWeakDecisioon(int weakDecisioon) {
+        this.weakDecisioon = weakDecisioon;
     }
 }

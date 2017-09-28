@@ -188,15 +188,15 @@ public class ListActivity extends AppCompatActivity {
                         buffer1.append(String.valueOf(year));
                         buffer1.append(String.valueOf(day));
                         String calendar_str = buffer1.toString();
-                        for(TwoWords twoWords:arrayList){
-                            twoWords.setDate(calendar_str);
-                            twoWords.setWeak(0);
-                            twoWords.save();
-                        }
                         groupTwoWords.setDown(1);
                         groupTwoWords.setFirstId(arrayList.get(0).getId());
                         groupTwoWords.setSize(arrayList.size());
                         groupTwoWords.save();
+                        for(TwoWords twoWords:arrayList){
+                            twoWords.setDate(calendar_str);
+                            twoWords.setGroupId(groupTwoWords.getId());
+                            twoWords.save();
+                        }
                         Intent intent = new Intent(ListActivity.this, MainActivity.class);
                         intent.putExtra("download_end",1);
                         startActivity(intent);

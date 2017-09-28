@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -45,7 +44,6 @@ import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWordsWeak;
 import com.orm.SugarRecord;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -117,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int which = preferences.getInt("which", 0);
         if (which == 0) {
             //初めての場合
-            showDialogUser(preferences);
+            showDialogUserFirst(preferences);
         } else {
             View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
             TextView textView = (TextView) header.findViewById(R.id.textView4);
@@ -135,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         long weak_id = preferences1.getLong("weak_id", 0);
         int there = 0;
         for (GroupTwoWords groupTwoWords : list) {
-            if (groupTwoWords.getGroupName().equals("間違えた")) {
+            if (groupTwoWords.getId() == weak_id) {
             } else {
                 if (groupTwoWords.getDown() == 0) {
                     adapter.add(groupTwoWords);
@@ -305,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_upload) {
             //アップロード
             upLoad();
-        }else if(id == R.id.nav_user){
+        } else if (id == R.id.nav_user) {
             //ユーザー
             showDialogUser();
         }
@@ -401,7 +399,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.show();
     }
 
-    public void showDialogUser(final SharedPreferences preferences) {
+    public void showDialogUserFirst(final SharedPreferences preferences) {
         final EditText editText = new EditText(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("バカ天にようこそ");
@@ -431,7 +429,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.setCancelable(false).show();
         GroupTwoWords groupTwoWords = new GroupTwoWords("間違えた", 1, 1, "", editText.getText().toString());
         groupTwoWords.save();
-        SharedPreferences preferences1 = getSharedPreferences("weak_id", 0);
+        SharedPreferences preferences1 = getSharedPreferences("weak_id", MODE_PRIVATE);
         SharedPreferences.Editor editor1 = preferences1.edit();
         editor1.putLong("weak_id", groupTwoWords.getId());
         editor1.commit();
@@ -472,12 +470,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(intent);
     }
 
-    public void showDialogUser(){
+    public void showDialogUser() {
         //ユーザー情報のダイアログ
-        final SharedPreferences preferences = getSharedPreferences("user",MODE_PRIVATE);
-        SharedPreferences preferencesId = getSharedPreferences("user_id",MODE_PRIVATE);
-        String userName = preferences.getString("user",null);
-        String userId = preferencesId.getString("user_id",null);
+        final SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
+        SharedPreferences preferencesId = getSharedPreferences("user_id", MODE_PRIVATE);
+        String userName = preferences.getString("user", null);
+        String userId = preferencesId.getString("user_id", null);
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         TextView textViewName = new TextView(this);
@@ -500,7 +498,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(DialogInterface dialogInterface, int i) {
                 //okの時の処理
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("user",editTextName.getText().toString());
+                editor.putString("user", editTextName.getText().toString());
                 editor.commit();
             }
         });
@@ -565,7 +563,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void fab2(View view) {
-        showDialogSetUp();
+        showDialogSolve();
     }
 
     public void makeChart() {
@@ -585,9 +583,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             makeChartNoMessage();
         } else if (!(calendars.get(0).equals(calendarStr))) {
             values.add(calendarStr);
-            barChartSystem2(calendars,questions,entries,values);
-        }else {
-            barChartSystem2(calendars,questions,entries,values);
+            barChartSystem2(calendars, questions, entries, values);
+        } else {
+            barChartSystem2(calendars, questions, entries, values);
         }
     }
 
@@ -600,7 +598,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         textView.setVisibility(View.VISIBLE);
     }
 
-    public void barChartSystem2(ArrayList<String> calendars, ArrayList<String> questions,ArrayList<BarEntry> entries, ArrayList<String> values){
+    public void barChartSystem2(ArrayList<String> calendars, ArrayList<String> questions, ArrayList<BarEntry> entries, ArrayList<String> values) {
         for (String calendar : calendars) {
             values.add(calendar);
         }

@@ -229,7 +229,7 @@ public class ListGroupWordsActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putInt("number_of_day", number_of_day);
                         editor.commit();
-                        TwoWords twoWords = new TwoWords("追加されたものたち", editText.getText().toString(), editText1.getText().toString(), date);
+                        TwoWords twoWords = new TwoWords("追加されたものたち", editText.getText().toString(), editText1.getText().toString(), date,groupTwoWords.getId());
                         if (twoWords.getJapanese().equals("")) {
                             makeToast("和訳が書かれていません");
                         } else if (twoWords.getEnglish().equals("")) {

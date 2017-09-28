@@ -29,9 +29,11 @@ public class GroupTwoWords extends SugarRecord {
     public GroupTwoWords() {
         //普通のコンストラクタ
     }
-    public GroupTwoWords(String groupName){
+
+    public GroupTwoWords(String groupName) {
         this.groupName = groupName;
     }
+
     public GroupTwoWords(String groupName, int size, long firstId, String calendar, String maker) {
         this.groupName = groupName;
         this.size = size;
@@ -72,6 +74,7 @@ public class GroupTwoWords extends SugarRecord {
         return userId;
     }
 
+
     public void setArrayList(ArrayList<TwoWords> arrayList) {
         this.arrayList = arrayList;
     }
@@ -103,4 +106,5 @@ public class GroupTwoWords extends SugarRecord {
     public void setSize(int size) {
         this.size = size;
     }
+
 }

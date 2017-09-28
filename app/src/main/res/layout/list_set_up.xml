@@ -31,7 +31,7 @@
                         android:layout_marginLeft="23dp"
                         android:fontFamily="sans-serif-medium"
                         android:gravity="center|left"
-                        android:textSize="20dp" />
+                        android:textSize="15dp" />
                 </RelativeLayout>
 
                 <LinearLayout

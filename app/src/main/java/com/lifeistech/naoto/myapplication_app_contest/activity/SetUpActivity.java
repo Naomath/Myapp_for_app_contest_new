@@ -151,14 +151,17 @@ public class SetUpActivity extends AppCompatActivity {
                 //登録する時の処理
                 int firstVisibleIndex = listView.getFirstVisiblePosition();
                 int lastVisibleIndex = listView.getLastVisiblePosition();
+                GroupTwoWords groupTwoWords = new GroupTwoWords();
+                groupTwoWords.save();
                 // 一気に登録している
+                //ここでグループとしても登録する
                 for (int i2 = firstVisibleIndex; i2 <= lastVisibleIndex; i2++) {
                     //for文でlistviewのセルの上から登録していく
                     TwoWordsForSet twoWordsForSet = (TwoWordsForSet) adapter.getItem(i2);
                     String japanese_string = twoWordsForSet.getJapanese();
                     String english_string = twoWordsForSet.getEnglish();
                     Calendar calendar = Calendar.getInstance();
-                    final int year = calendar.get(Calendar.YEAR);
+                    int year = calendar.get(Calendar.YEAR);
                     String year_string = Integer.toString(year);
                     final int day = calendar.get(Calendar.DAY_OF_YEAR);
                     String day_string = Integer.toString(day);
@@ -166,16 +169,16 @@ public class SetUpActivity extends AppCompatActivity {
                     buf.append(year_string);
                     buf.append(day_string);
                     String date = buf.toString();
-                    SharedPreferences preferences = getSharedPreferences(date, MODE_PRIVATE);
-                    int number_of_day = preferences.getInt("number_of_day", 0);
+                    SharedPreferences preferences1 = getSharedPreferences(date, MODE_PRIVATE);
+                    int number_of_day = preferences1.getInt("number_of_day", 0);
                     number_of_day++;
-                    SharedPreferences.Editor editor = preferences.edit();
+                    SharedPreferences.Editor editor = preferences1.edit();
                     editor.putInt("number_of_day", number_of_day);
                     editor.commit();
                     StringBuffer buf2 = new StringBuffer();
                     buf2.append(date);
                     String date2 = buf2.toString();
-                    TwoWords two_words = new TwoWords(group_name, japanese_string, english_string, date2);
+                    TwoWords two_words = new TwoWords(group_name, japanese_string, english_string, date2,groupTwoWords.getId());
                     //ここでlistにtwoewordsを入れる
                     two_words.save();
                     list.add(two_words);
@@ -196,12 +199,11 @@ public class SetUpActivity extends AppCompatActivity {
                 buf3.append("/");
                 buf3.append(String.valueOf(day_str));
                 String maker = preferences.getString("user",null);
-                GroupTwoWords groupTwoWords = new GroupTwoWords(group_name, size, first_id, buf3.toString(), maker);
+                groupTwoWords = new GroupTwoWords(group_name, size, first_id, buf3.toString(), maker);
                 SharedPreferences preferencesUserID = getSharedPreferences("user_id",MODE_PRIVATE);
                 groupTwoWords.setUserId(preferencesUserID.getString("user_id",null));
                 groupTwoWords.setDown(0);
                 groupTwoWords.save();
-                //ここでグループとしても登録する
                 Intent intent = new Intent(SetUpActivity.this, MainActivity.class);
                 startActivity(intent);
             }

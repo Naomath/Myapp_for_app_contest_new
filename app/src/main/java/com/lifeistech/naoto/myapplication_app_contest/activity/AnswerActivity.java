@@ -32,6 +32,7 @@ public class AnswerActivity extends AppCompatActivity {
     int g_mode;
     int g_modeQuestion;
     long g_id;
+    TwoWords twoWords;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,35 +75,40 @@ public class AnswerActivity extends AppCompatActivity {
     public void dont_know(View view) {
         //わからなかった時の処理
         //TwowordsWeakの登録
+        Calendar calendar1 = Calendar.getInstance();
+        int year = calendar1.get(Calendar.YEAR);
+        int month = calendar1.get(Calendar.MONTH);
+        int day_str = calendar1.get(Calendar.DAY_OF_MONTH);
+        StringBuffer buf3 = new StringBuffer();
+        buf3.append(String.valueOf(year));
+        buf3.append("-");
+        buf3.append(String.valueOf(month + 1));
+        buf3.append("/");
+        buf3.append(String.valueOf(day_str));
         if (g_mode == 0) {
             String str = g_ids.get(g_number);
             long id = Long.parseLong(str);
-            TwoWords twoWords = SugarRecord.findById(TwoWords.class, id);
-            if (twoWords.getWeak() == 1) {
-                //もうすでに間違えている場合の処理
-                showDialogEnd();
-            } else {
-                twoWords.setWeak(1);
-                twoWords.save();
-                TwoWordsWeak twoWordsWeak = new TwoWordsWeak(g_japaneses.get(g_number), g_englishes.get(g_number));
+            twoWords = SugarRecord.findById(TwoWords.class, id);
+            twoWords.setNumberOfSolve(twoWords.getNumberOfSolve() + 1);
+            twoWords.setNumberOfWeak(twoWords.getNumberOfWeak() + 1);
+            if (twoWords.getPercent() >= 70 && twoWords.getWeakDecisioon() == 0) {
+                TwoWordsWeak twoWordsWeak = new TwoWordsWeak(g_japaneses.get(g_number), g_englishes.get(g_number), twoWords.getId());
                 twoWordsWeak.save();
                 SharedPreferences preferences = getSharedPreferences("weak_id", MODE_PRIVATE);
                 long weak_id = preferences.getLong("weak_id", 0);
-                GroupTwoWords groupTwoWords = GroupTwoWords.findById(GroupTwoWords.class, weak_id);
-                Calendar calendar1 = Calendar.getInstance();
-                int year = calendar1.get(Calendar.YEAR);
-                int month = calendar1.get(Calendar.MONTH);
-                int day_str = calendar1.get(Calendar.DAY_OF_MONTH);
-                StringBuffer buf3 = new StringBuffer();
-                buf3.append(String.valueOf(year));
-                buf3.append("-");
-                buf3.append(String.valueOf(month + 1));
-                buf3.append("/");
-                buf3.append(String.valueOf(day_str));
-                groupTwoWords.setCalendar(buf3.toString());
-                groupTwoWords.save();
+                GroupTwoWords groupTwoWordsWeak = GroupTwoWords.findById(GroupTwoWords.class, weak_id);
+                groupTwoWordsWeak.setCalendar(buf3.toString());
+                groupTwoWordsWeak.save();
+                twoWords.setWeakId(twoWordsWeak.getId());
+                twoWords.setWeakDecisioon(1);
+                twoWords.save();
+            } else if (twoWords.getPercent() < 70 && twoWords.getWeakDecisioon() == 1) {
+                TwoWordsWeak twoWordsWeak = TwoWordsWeak.findById(TwoWordsWeak.class, twoWords.getWeakId());
+                twoWordsWeak.delete();
+                twoWords.setWeakDecisioon(0);
             }
-
+            GroupTwoWords groupTwoWords = GroupTwoWords.findById(GroupTwoWords.class, twoWords.getGroupId());
+            groupTwoWords.setCalendar(buf3.toString());
         }
         //画面遷移
         if (g_number + 1 == g_japaneses.size()) {
@@ -179,12 +185,21 @@ public class AnswerActivity extends AppCompatActivity {
         buffer.append(String.valueOf(month));
         buffer.append("/");
         buffer.append(String.valueOf(day));
-        calendars.add(buffer.toString());
-        questions.add(String.valueOf(g_japaneses.size()));
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("calendars", gson.toJson(calendars));
-        editor.putString("questions", gson.toJson(questions));
-        editor.commit();
+        String calendarBuffer = buffer.toString();
+        boolean decision = true;
+        for (int i = 0; i < calendars.size(); i++) {
+            if (calendars.get(i).equals(calendarBuffer)) {
+                questions.set(i, String.valueOf(g_japaneses.size()));
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("calendars", gson.toJson(calendars));
+                editor.putString("questions", gson.toJson(questions));
+                editor.commit();
+                decision = false;
+            }
+        }
+        if (decision) {
+            calendars.add(buffer.toString());
+            questions.add(String.valueOf(g_japaneses.size()));
+        }
     }
-
 }
