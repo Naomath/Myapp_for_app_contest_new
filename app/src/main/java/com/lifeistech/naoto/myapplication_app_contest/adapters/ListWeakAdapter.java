@@ -50,11 +50,9 @@ public class ListWeakAdapter extends ArrayAdapter<TwoWordsWeak>{
         // Listviewのカスタマイズしている
         TextView wordsJapanese;
         TextView wordsEnglish;
-        ImageView imageView;
         public ViewSetUp(View view){
             wordsJapanese = (TextView)view.findViewById(R.id.textView_adapter_weak);
             wordsEnglish = (TextView)view.findViewById(R.id.textView_adapter_weak1);
-            imageView = (ImageView)view.findViewById(R.id.imageView8);
         }
     }
 }

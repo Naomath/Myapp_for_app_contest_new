@@ -15,6 +15,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,12 +65,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("バカ天");
+        setTitle("Languagous");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_list);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, -R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -426,7 +428,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 makeToast(buffer.toString());
             }
         });
-        builder.setCancelable(false).show();
+        final AlertDialog dialog = builder.create();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String strEdit = editable.toString();
+                if(strEdit.equals("")){
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                }else {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                }
+            }
+        });
+        dialog.setCancelable(false);
+        dialog.show();
         GroupTwoWords groupTwoWords = new GroupTwoWords("間違えた", 1, 1, "", editText.getText().toString());
         groupTwoWords.save();
         SharedPreferences preferences1 = getSharedPreferences("weak_id", MODE_PRIVATE);

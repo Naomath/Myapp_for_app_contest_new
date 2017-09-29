@@ -8,8 +8,8 @@
         android:name=".sugar.SugarOrmControl"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:icon="@drawable/icon"
-        android:label="バカ天"
+        android:icon="@drawable/app_icon"
+        android:label="Languagous"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity

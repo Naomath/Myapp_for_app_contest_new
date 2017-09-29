@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.lifeistech.naoto.myapplication_app_contest.adapters.ListWeakAdapter;
 import com.lifeistech.naoto.myapplication_app_contest.R;
+import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWords;
 import com.lifeistech.naoto.myapplication_app_contest.sugar.TwoWordsWeak;
 import com.orm.SugarRecord;
 
@@ -99,10 +100,16 @@ public class ListWeakActivity extends AppCompatActivity {
         });
         //アダプターの設定終わり
         List<TwoWordsWeak> list = SugarRecord.listAll(TwoWordsWeak.class);
-        int number = 0;
         for (TwoWordsWeak twoWordsWeak : list) {
-            adapter.add(twoWordsWeak);
-            number++;
+            TwoWords twoWords = SugarRecord.findById(TwoWords.class,twoWordsWeak.getIdTwoWords());
+            if(twoWords.getPercent()>=70){
+                adapter.add(twoWordsWeak);
+            }else{
+                twoWords.setWeakDecisioon(0);
+                twoWords.save();
+                twoWordsWeak.delete();
+                return;
+            }
         }
     }
 
